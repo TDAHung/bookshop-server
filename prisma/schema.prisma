@@ -12,3 +12,136 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         Int        @id @default(autoincrement())
+  username   String     @unique
+  email      String     @unique
+  password   String
+  role       UserRole
+  createdAt  DateTime   @default(now())
+  updateddAt DateTime   @default(now())
+  reviews    Review[]
+  orders     Order[]
+  cartItems  CartItem[]
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updateddAt  DateTime @default(now())
+  books       Book[]
+}
+
+model Author {
+  id         Int      @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  bio        String?
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @default(now())
+  books      Book[]
+}
+
+model Book {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  price       Float
+  discount    Float       @default(0)
+  onSale      Boolean     @default(false)
+  popular     Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updateddAt  DateTime    @default(now())
+  categoryId  Int?
+  authorId    Int?
+  category    Category?   @relation(fields: [categoryId], references: [id])
+  author      Author?     @relation(fields: [authorId], references: [id])
+  reviews     Review[]
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+  promotions  Promotion[]
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  rating     Int      @default(1)
+  comment    String?
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @default(now())
+  bookId     Int
+  userId     Int
+  book       Book     @relation(fields: [bookId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  status     OrderStatus
+  total      Float
+  createdAt  DateTime    @default(now())
+  updateddAt DateTime    @default(now())
+  userId     Int
+  user       User?       @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  price      Float
+  bookId     Int
+  orderId    Int
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @default(now())
+  book       Book     @relation(fields: [bookId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id])
+}
+
+model Promotion {
+  id         Int           @id @default(autoincrement())
+  type       PromotionType
+  startDate  DateTime?
+  endDate    DateTime?
+  bookId     Int
+  createdAt  DateTime      @default(now())
+  updateddAt DateTime      @default(now())
+  book       Book          @relation(fields: [bookId], references: [id])
+}
+
+model CartItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  userId     Int
+  bookId     Int
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  book       Book     @relation(fields: [bookId], references: [id])
+}
+
+model About {
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @default(now())
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  SHIPPED
+  CANCELED
+}
+
+enum PromotionType {
+  ON_SALE
+  POPULAR
+}
