@@ -50,9 +50,9 @@ model Book {
   title       String
   description String?
   price       Float
-  discount    Float       @default(0)
-  onSale      Boolean     @default(false)
-  popular     Boolean     @default(false)
+  discount    Float?      @default(0)
+  onSale      Boolean?    @default(false)
+  popular     Boolean?    @default(false)
   createdAt   DateTime    @default(now())
   updateddAt  DateTime    @default(now())
   categoryId  Int?
