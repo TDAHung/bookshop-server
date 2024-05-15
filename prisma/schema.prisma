@@ -72,9 +72,9 @@ model Review {
   createdAt  DateTime @default(now())
   updateddAt DateTime @default(now())
   bookId     Int
-  userId     Int
+  userId     Int?
   book       Book     @relation(fields: [bookId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id])
 }
 
 model Order {
@@ -83,7 +83,7 @@ model Order {
   total      Float
   createdAt  DateTime    @default(now())
   updateddAt DateTime    @default(now())
-  userId     Int
+  userId     Int?
   user       User?       @relation(fields: [userId], references: [id])
   orderItems OrderItem[]
 }
@@ -114,11 +114,11 @@ model Promotion {
 model CartItem {
   id         Int      @id @default(autoincrement())
   quantity   Int
-  userId     Int
+  userId     Int?
   bookId     Int
   createdAt  DateTime @default(now())
   updateddAt DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id])
   book       Book     @relation(fields: [bookId], references: [id])
 }
 
