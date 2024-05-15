@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateBookInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Mutation {
+  createBook(createBookInput: CreateBookInput!): Book!
+  removeBook(id: Int!): Book!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+}
+
+type Query {
+  book(id: Int!): Book!
+}
+
+input UpdateBookInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
