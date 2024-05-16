@@ -27,41 +27,43 @@ model User {
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  books       Book[]
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  description  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+  books        Book[]
+  BookCategory BookCategory[]
 }
 
 model Author {
-  id        Int      @id @default(autoincrement())
-  firstName String
-  lastName  String
-  bio       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  books     Book[]
+  id         Int          @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  bio        String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  books      Book[]
+  BookAuthor BookAuthor[]
 }
 
 model Book {
-  id          Int         @id @default(autoincrement())
-  title       String
-  description String?
-  price       Float
-  images      String[]
-  discount    Float?      @default(0)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now())
-  categoryId  Int?
-  authorId    Int?
-  category    Category?   @relation(fields: [categoryId], references: [id])
-  author      Author?     @relation(fields: [authorId], references: [id])
-  reviews     Review[]
-  orderItems  OrderItem[]
-  cartItems   CartItem[]
-  promotions  Promotion[]
+  id           Int            @id @default(autoincrement())
+  title        String
+  description  String?
+  price        Float
+  images       String[]
+  discount     Float?         @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+  categories   Category[]
+  authors      Author[]
+  reviews      Review[]
+  orderItems   OrderItem[]
+  cartItems    CartItem[]
+  promotions   Promotion[]
+  BookAuthor   BookAuthor[]
+  BookCategory BookCategory[]
 }
 
 model Review {
@@ -127,6 +129,26 @@ model About {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+model BookAuthor {
+  id        Int      @id @default(autoincrement())
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    Int
+  author    Author   @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model BookCategory {
+  id         Int      @id @default(autoincrement())
+  book       Book     @relation(fields: [bookId], references: [id])
+  bookId     Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }
 
 enum UserRole {
