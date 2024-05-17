@@ -1,21 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --BG-COLOR: #F2F8FF;
+    --TEXT-COLOR: #806BF6;
+    --ACTIVE-COLOR: #F5F3FF;
+    --UNACTIVE-COLOR: #7C7C7C;
+}
+
+html {
+    font-size: 62.5%;
+    height: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: var(--BG-COLOR);
+    background-size: cover;
+    height: 100%;
 }
 
-.card {
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+ul {
+    list-style-type: none;
 }
 
-.card-header {
-    background-color: #007bff;
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid #007bff;
+img {
+    width: 100%;
+    object-fit: cover;
 }
 
-.card-body {
-    padding: 1.25rem;
+a {
+    text-decoration: none;
+}
+
+header {
+    background-color: white;
+    width: 80%;
+    height: 7rem;
+    color: var(--UNACTIVE-COLOR);
+}
+
+.navbar {
+    width: 20%;
+    height: 100%;
+    background-color: white;
+    color: var(--UNACTIVE-COLOR);
+}
+
+.project__name {
+    color: var(--TEXT-COLOR);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar__link.active {
+    border-right: 0.2rem solid var(--TEXT-COLOR);
+}
+
+.navbar__link,
+.navbar__link__wrapper {
+    transition: 0.5s;
+}
+
+.navbar__link:hover {
+    border-right: 0.2rem solid white;
+}
+
+.navbar__link__wrapper:hover {
+    background-color: var(--ACTIVE-COLOR);
+    color: var(--TEXT-COLOR);
+    border-radius: 0.5rem;
+}
+
+.navbar__link__wrapper.active {
+    background-color: var(--ACTIVE-COLOR);
+    color: var(--TEXT-COLOR);
+    border-radius: 0.5rem;
+}
+
+.content {
+    width: 80%;
+    padding-top: 7rem;
+}
+
+.search__form {
+    width: 40rem;
+}
+
+.search__input__wrapper {
+    background-color: #F5F9FC;
+}
+
+input[type="text"].search {
+    background-color: #F5F9FC;
+}
+
+input[type="text"].search:visited {
+    border: none;
+}
+
+
+
+.t-head-wrapper {
+    width: 95%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.t-row-wrapper {
+    width: 100%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.table {
+    border-radius: 2rem;
+}
+
+.action {
+    right: 0%;
+    top: 30%;
+}
+
+.action-path {
+    width: 1.5rem;
 }

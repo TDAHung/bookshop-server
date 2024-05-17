@@ -1,0 +1,32 @@
+.t-head,
+.t-row {
+    width: calc(100% / 4);
+}
+
+.t-head-wrapper,
+.t-row-wrapper {
+    width: 95%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.create-category {
+    right: 11%;
+    top: 3%;
+    color: var(--ACTIVE-COLOR);
+    background-color: var(--TEXT-COLOR);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    transition: 0.25s;
+}
+
+.table {
+    border-radius: 2rem;
+}
+
+.category__id {
+    width: 2rem;
+}
+
+.category__name {
+    width: 7rem;
+}
