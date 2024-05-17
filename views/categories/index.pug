@@ -1,8 +1,9 @@
 extends ../layouts/admin
 
 block content
-    div.table.w-full.bg-white
-        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
+    div.table.w-full.bg-white.relative
+        a.create-category.absolute.text-2xl(href="categories/create") Add Category
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
             li.t-head.category__id ID
             li.t-head.category__name Name
             li.t-head Description
