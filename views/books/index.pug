@@ -12,25 +12,31 @@ block content
 
     div.table.w-full.bg-white.relative
         a.create-book.absolute.text-2xl(href="books/create") Add Book
-        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16.w-full
             li.t-head.book__id ID
             li.t-head.book__title Title
-            li.t-head Description
-            li.t-head.text-center Price (USD)
-            li.t-head Images
-            li.t-head Quantity
-            li.t-head.text-center Discount (USD)
+            li.t-head.book__description Description
+            li.t-head.book__price Price (USD)
+            li.t-head.book__image Images
+            li.t-head.book__quantity Quantity
+            li.t-head.book__discount Discount (USD)
             li.t-head Category
-            li.t-head Last updated at
+            li.t-head Last updated
         div.line
         each book in books
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative
                 li.t-row.book__id= book.id
                 li.t-row.book__title= book.title
-                li.t-row= book.description
-                li.t-row.text-center= book.price
-                li.t-row= book.images
-                li.t-row= book.quantity
-                li.t-row.text-center= book.discount
+                li.t-row.book__description= book.description
+                li.t-row.book__price= book.price
+                li.t-row.book__image= book.images
+                li.t-row.book__quantity= book.quantity
+                li.t-row.book__discount= book.discount
                 li.t-row.category= felineAttibutes(book.categories)
                 li.t-row.updated_at= book.updatedAt
+                li.t-row.absolute.t-row-action.action
+                        div.absolute.w-20(class="right-1/4").flex.justify-between
+                            a(href=`books/edit/${book.id}`  class="action-path")
+                                img(src="./images/edit.png" alt="")
+                            a(href=`books/delete/${book.id}` class="action-path")
+                                img(src="./images/delete.png" alt="")
