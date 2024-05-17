@@ -1,0 +1,59 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    script(src="https://cdn.tailwindcss.com")
+    script(src="https://kit.fontawesome.com/39a762dd6d.js", crossorigin="anonymous")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap", rel="stylesheet")
+    link(rel="stylesheet", href="/stylesheets/admin.css")
+    if (path == 'books')
+      link(rel="stylesheet", href="/stylesheets/books.css")
+    else if (path == 'categories')
+      link(rel="stylesheet", href="/stylesheets/categories.css")
+    else if (path == 'orders')
+      link(rel="stylesheet", href="/stylesheets/orders.css")
+    title Admin - Bookshop
+  body
+    include ../partials/_header
+    nav.navbar.fixed(class="w-1/5")
+      div.project__name.text-center.font-extrabold.text-5xl.py-16
+        | Bookshop
+      ul.navbar__list.text-3xl
+        li.navbar__link.px-8.h-20(class= path === '/' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === '/' ? 'active' : '')
+            a(href="/")
+              i.fa-solid.fa-chart-line
+              |  Dashboard
+        li.navbar__link.px-8.h-20(class= path === 'books' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'books' ? 'active' : '')
+            a(href="/books")
+              i.fa-solid.fa-book
+              |  Books
+        li.navbar__link.px-8.h-20.h-20(class= path === 'categories' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'categories' ? 'active' : '')
+            a(href="/categories")
+              i.fa-solid.fa-list
+              |  Category
+        li.navbar__link.px-8.h-20(class= path === 'reviews' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'reviews' ? 'active' : '')
+            a(href="#")
+              i.fa-regular.fa-star
+              |  Reviews
+        li.navbar__link.px-8.h-20(class= path === 'orders' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'orders' ? 'active' : '')
+            a(href="/orders")
+              i.fa-solid.fa-cart-shopping
+              |  Order
+        li.navbar__link.px-8.h-20(class= path === 'about' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
+            a(href="/about")
+              i.fa-regular.fa-address-card
+              |  About
+    div.content.absolute.end-0
+      div.container.p-8.rounded-s-md
+        block content
+
+    script(src="/javascript/main.js")

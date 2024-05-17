@@ -1,0 +1,17 @@
+extends ../layouts/admin
+
+block content
+    div.table.w-full.bg-white
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
+            li.t-head.category__id ID
+            li.t-head.category__name Name
+            li.t-head Description
+            li.t-head Last updated at
+        div.line
+        each category in categories
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg
+                li.t-row.category__id= category.id
+                li.t-row.category__name= category.name
+                li.t-row= category.description
+                li.t-row.updated_at= category.updatedAt
+

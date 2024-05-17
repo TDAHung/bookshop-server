@@ -1,0 +1,36 @@
+extends ../layouts/admin
+
+block content
+    - const felineAttibutes = (categories) => {
+        - if (categories && categories.length > 0) {
+            - return categories.map(category => category.category.name).join(', ');
+        - } else {
+            - return 'No category available';
+        - }
+    - }
+
+
+    div.table.w-full.bg-white.relative
+        a.create-book.absolute.text-2xl(href="books/create") Add Book
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
+            li.t-head.book__id ID
+            li.t-head.book__title Title
+            li.t-head Description
+            li.t-head.text-center Price (USD)
+            li.t-head Images
+            li.t-head Quantity
+            li.t-head.text-center Discount (USD)
+            li.t-head Category
+            li.t-head Last updated at
+        div.line
+        each book in books
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg
+                li.t-row.book__id= book.id
+                li.t-row.book__title= book.title
+                li.t-row= book.description
+                li.t-row.text-center= book.price
+                li.t-row= book.images
+                li.t-row= book.quantity
+                li.t-row.text-center= book.discount
+                li.t-row.category= felineAttibutes(book.categories)
+                li.t-row.updated_at= book.updatedAt
