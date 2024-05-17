@@ -4,15 +4,26 @@ block content
     div.table.w-full.bg-white
         ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
             li.t-head.order__id ID
-            li.t-head.order__total Total (USD)
+            li.t-head.order__total.text-center Total (USD)
             li.t-head.order__address Address
-            li.t-head.order__status Status
-            li.t-head Last updated at
+            li.t-head.order__status.text-center Status
+            li.t-head Last updated
         div.line
         each order in orders
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative
                 li.t-row.order__id= order.id
-                li.t-row.order__total= order.total
+                li.t-row.order__total.text-center= order.total
                 li.t-row.order__address= order.address
-                li.t-row.order__status= order.status
+                if (order.status == 'COMPLETED')
+                    li.t-row.order__status.text-center.completed= order.status
+                else if (order.status == 'CANCELED')
+                    li.t-row.order__status.text-center.cancel= order.status
+                else if (order.status == 'SHIPPED')
+                    li.t-row.order__status.text-center.shipped= order.status
+                else if (order.status == 'PENDING')
+                    li.t-row.order__status.text-center.pending= order.status
                 li.t-row.updated_at= order.updatedAt
+                li.t-row.t-row-action.absolute.action
+                        div.absolute(class="right-1/4")
+                            a(href=`order/edit/${order.id}`  class="action-path")
+                                img(src="./images/edit.png" alt="")

@@ -1,0 +1,47 @@
+extends ../layouts/admin
+
+block content
+
+    form.create-book-form.text-xl(action=`/books/update/${order.id}` method="post")
+        .space-y-12
+            .border-b.pb-12(class='border-gray-900/10')
+                h2.font-semibold.leading-7.text-gray-900.text-4xl Book
+            .mt-10.grid.grid-cols-1.gap-x-6.gap-y-8(class='sm:grid-cols-6')
+                div(class='sm:col-span-4')
+                    .mt-2.flex.items-center
+                        div.text-2xl.font-medium.leading-6.text-gray-900.me-8 Status
+                        if (order.status == 'COMPLETED')
+                            div.order__status.text-center.completed= order.status
+                        else if (order.status == 'CANCELED')
+                            div.order__status.text-center.cancel= order.status
+                        else if (order.status == 'SHIPPED')
+                            div.order__status.text-center.shipped= order.status
+                        else if (order.status == 'PENDING')
+                    .mt-8.flex.items-center
+                        label.text-2xl.font-medium.leading-6.text-gray-900.me-8 Total (USD)
+                        div.border-0.bg-transparent.pl-1.text-gray-900.text-xl= order.total
+                    .mt-8.flex.items-center
+                        label.text-2xl.font-medium.leading-6.text-gray-900.me-8 Address
+                        div.border-0.bg-transparent.pl-1.text-gray-900.text-xl= order.address
+            .grid.grid-cols-4.gap-4
+                each orderItem in order.orderItems
+                    div
+                        div.orderItemImages
+                            img(src=`${orderItem.book.images}`, alt="asdasd")
+                        div.orderItemTitle
+                            span Book Title:
+                            span= orderItem.book.title
+                        div.orderItemDiscount
+                            span Discount:
+                            span= orderItem.book.discount
+                        div.orderItemPrice
+                            span Price:
+                            span= `${orderItem.price} (USD)`
+                        div.orderItemQuantity
+                            span Quantity:
+                            span= orderItem.quantity
+
+
+        .mt-6.flex.items-center.justify-end.gap-x-6
+            button.text-2xl.font-semibold.leading-6.text-gray-900(type='button') Cancel
+            button.rounded-md.bg-indigo-600.px-3.py-2.text-2xl.font-semibold.text-white.shadow-sm(class='hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600') Save
