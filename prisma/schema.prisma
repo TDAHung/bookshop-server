@@ -27,43 +27,40 @@ model User {
 }
 
 model Category {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  description  String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @default(now())
-  books        Book[]
-  BookCategory BookCategory[]
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @default(now())
+  books       BookCategory[]
 }
 
 model Author {
-  id         Int          @id @default(autoincrement())
-  firstName  String
-  lastName   String
-  bio        String?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(now())
-  books      Book[]
-  BookAuthor BookAuthor[]
+  id        Int          @id @default(autoincrement())
+  firstName String
+  lastName  String
+  bio       String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(now())
+  books     BookAuthor[]
 }
 
 model Book {
-  id           Int            @id @default(autoincrement())
-  title        String
-  description  String?
-  price        Float
-  images       String[]
-  discount     Float?         @default(0)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @default(now())
-  categories   Category[]
-  authors      Author[]
-  reviews      Review[]
-  orderItems   OrderItem[]
-  cartItems    CartItem[]
-  promotions   Promotion[]
-  BookAuthor   BookAuthor[]
-  BookCategory BookCategory[]
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String?
+  price       Float
+  images      String[]
+  discount    Float?         @default(0)
+  quantity    Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @default(now())
+  categories  BookCategory[]
+  authors     BookAuthor[]
+  reviews     Review[]
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+  promotions  Promotion[]
 }
 
 model Review {
@@ -139,6 +136,8 @@ model BookAuthor {
   authorId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@index([bookId, authorId])
 }
 
 model BookCategory {
@@ -149,6 +148,8 @@ model BookCategory {
   categoryId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
+
+  @@index([bookId, categoryId])
 }
 
 enum UserRole {
