@@ -9,12 +9,12 @@ export class AdminOrderService {
     constructor(private readonly prismaService: PrismaService) { }
 
     order = async (
-        bookWhereUniqueInput: Prisma.OrderWhereUniqueInput,
+        reivewWhereUniqueInput: Prisma.OrderWhereUniqueInput,
         include?: Prisma.OrderInclude,
     ): Promise<OrderEntity | null> => {
         try {
             const order = await this.prismaService.order.findUniqueOrThrow({
-                where: bookWhereUniqueInput,
+                where: reivewWhereUniqueInput,
                 include
             });
             return order;
@@ -35,7 +35,7 @@ export class AdminOrderService {
         }
     ): Promise<OrderModel[] | null> => {
         const { skip, take, cursor, where, orderBy, include } = params;
-        const books = await this.prismaService.order.findMany({
+        const reivews = await this.prismaService.order.findMany({
             skip,
             take,
             cursor,
@@ -44,7 +44,7 @@ export class AdminOrderService {
             orderBy
         });
         // const responsePosts = posts.map((post) => this.destructuring(post));
-        return books;
+        return reivews;
     }
 
 }

@@ -1,5 +1,5 @@
 import { $Enums, OrderItem, User } from "@prisma/client";
-import { OrderItemsEntity } from "./order_item.entity";
+import { OrderItemsEntity } from "./order-items.entity";
 
 export class OrderEntity {
     id: number;

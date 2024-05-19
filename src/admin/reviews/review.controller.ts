@@ -1,15 +1,27 @@
+import { AdminReviewService } from './review.service';
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Param, Post, Render } from '@nestjs/common';
 
 @Controller()
 export class AdminReviewController {
 
-
+    constructor(private readonly adminReviewService: AdminReviewService) { }
     @Get("reviews")
     @Render('reviews/index')
-    index() {
+    async index() {
+        const reviews = await this.adminReviewService.reviews({
+            include: {
+                user: true,
+                book: true,
+            },
+            orderBy: {
+                bookId: 'desc'
+            }
+        });
+        console.log(reviews);
         return {
             path: 'reviews',
-            message: 'asdasdadsdad'
+            reviews,
         }
     }
 
@@ -26,7 +38,7 @@ export class AdminReviewController {
 
     @Get("reviews/edit")
     @Render('reviews/edit')
-    edit(@Param('id') id: number,) {
+    edit(@Param('id') id: number) {
 
         return {
             book: {}

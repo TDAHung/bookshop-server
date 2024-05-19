@@ -9,6 +9,7 @@ import { AdminOrderModule } from './admin/order/order.module';
 import { AdminPromotionListModule } from './admin/promotion-list/promotion-list.module';
 import { BookModule } from './book/book.module';
 import { AdminHomeModule } from './admin/home/home.module';
+import { AdminReviewModule } from './admin/reviews/review.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AdminHomeModule } from './admin/home/home.module';
     AdminPromotionListModule,
     AdminBookModule,
     AdminAuthModule,
+    AdminReviewModule,
     AdminCategoryModule,
     BookModule
   ]
