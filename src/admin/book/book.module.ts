@@ -4,9 +4,10 @@ import { AdminBookController } from './book.controller';
 import { PrismaService } from 'src/prisma.service';
 import { AdminCategoryService } from '../category/category.service';
 import { AdminBookCategoryService } from '../book_category/book_category.service';
+import { AwsService } from '../aws/aws.service';
 
 @Module({
-  providers: [AdminBookService, PrismaService, AdminCategoryService, AdminBookCategoryService],
+  providers: [AdminBookService, PrismaService, AdminCategoryService, AdminBookCategoryService, AwsService],
   controllers: [AdminBookController]
 })
 export class AdminBookModule { }

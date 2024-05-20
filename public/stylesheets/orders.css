@@ -32,6 +32,14 @@
     box-shadow: 0 0 1rem #FFC71E;
 }
 
+.order__status.shipping {
+    border-radius: 0.8rem;
+    padding: 0.5rem;
+    color: #A0C2F6;
+    box-shadow: 0 0 1rem #A0C2F6;
+}
+
+
 .order__status.cancel {
     border-radius: 0.8rem;
     padding: 0.5rem;
@@ -45,7 +53,6 @@
     color: #06DDA3;
     box-shadow: 0 0 1rem #06DDA3;
 }
-
 
 .order__status.pending {
     border-radius: 0.8rem;

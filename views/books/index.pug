@@ -24,12 +24,13 @@ block content
             li.t-head Last updated
         div.line
         each book in books
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center
                 li.t-row.book__id= book.id
                 li.t-row.book__title= book.title
                 li.t-row.book__description= book.description
                 li.t-row.book__price= book.price
-                li.t-row.book__image= book.images
+                li.t-row.book__image
+                    img(src=`${book.images[0]}`)
                 li.t-row.book__quantity= book.quantity
                 li.t-row.book__discount= book.discount
                 li.t-row.category= felineAttibutes(book.categories)

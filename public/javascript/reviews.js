@@ -16,7 +16,6 @@
 
     const review_rating = document.querySelectorAll('.t-row.review__rating');
     review_rating.forEach((rating) => {
-        console.log(rating);
         rating.innerHTML = renderStarRating(rating.innerText);
     });
 })()

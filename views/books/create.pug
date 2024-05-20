@@ -2,7 +2,7 @@ extends ../layouts/admin
 
 block content
 
-    form.create-book-form(action="new", method="post")
+    form.create-book-form(action="new", method="post" enctype="multipart/form-data")
         .space-y-12
             .border-b.pb-12(class='border-gray-900/10')
                 h2.font-semibold.leading-7.text-gray-900.text-4xl Book
@@ -25,11 +25,9 @@ block content
                     .mt-2
                         textarea#about.block.w-full.text-xl.rounded-md.border-0.text-gray-900.shadow-sm.ring-1.ring-inset.ring-gray-300(name='description' rows='3' class='py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600')
                 .col-span-full
-                    label.block.text-2xl.font-medium.leading-6.text-gray-900(for='photo') Photo
-                    .mt-2.flex.items-center.gap-x-3
-                        svg.h-12.w-12.text-gray-300(viewbox='0 0 24 24' fill='currentColor' aria-hidden='true')
-                            path(fill-rule='evenodd' d='M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z' clip-rule='evenodd')
-                        button.rounded-md.bg-white.text-sm.font-semibold.text-gray-900.shadow-sm.ring-1.ring-inset.ring-gray-300(type='button' class='px-2.5 py-1.5 hover:bg-gray-50') Change
+                    label.block.text-2xl.font-medium.leading-6.text-gray-900(for='images') Images
+                    .mt-2
+                        input(type="file" class="form-control" id="images" multiple="multiple" accept="image/gif, image/jpeg, image/png, image/jpg, image/webp" name="images")
         .border-b.mt-4.pb-12(class='border-gray-900/10')
             h2.text-2xl.font-semibold.leading-7.text-gray-900 Categories
             .space-y-10

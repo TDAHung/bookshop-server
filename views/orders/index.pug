@@ -22,6 +22,8 @@ block content
                     li.t-row.order__status.text-center.shipped= order.status
                 else if (order.status == 'PENDING')
                     li.t-row.order__status.text-center.pending= order.status
+                else if (order.status == 'SHIPPING')
+                    li.t-row.order__status.text-center.shipping= order.status
                 li.t-row.updated_at= order.updatedAt
                 li.t-row.t-row-action.absolute.action
                         div.absolute(class="right-1/4")
