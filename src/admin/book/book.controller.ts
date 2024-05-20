@@ -139,7 +139,7 @@ export class AdminBookController {
                 description: params.description,
                 categories: {
                     create: connectCategory
-                }
+                },
             },
         });
         return res.redirect("/books");

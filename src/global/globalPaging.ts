@@ -5,5 +5,5 @@ interface IItemsPerPage {
 
 export const ItemsPerPage: IItemsPerPage = {
     categories: 10,
-    books: 9
+    books: 8
 };

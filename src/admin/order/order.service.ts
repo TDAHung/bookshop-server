@@ -47,4 +47,26 @@ export class AdminOrderService {
         return reivews;
     }
 
+    update = async (
+        params: {
+            where: Prisma.OrderWhereUniqueInput,
+            data: Prisma.OrderUncheckedUpdateInput,
+            include?: Prisma.OrderInclude,
+        }
+    ): Promise<OrderModel | null> => {
+        try {
+            const { where, data, include } = params;
+            data.updatedAt = new Date();
+            const order = await this.prismaService.order.update({
+                where,
+                data,
+                include
+            });
+            console.log(order);
+            return order;
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

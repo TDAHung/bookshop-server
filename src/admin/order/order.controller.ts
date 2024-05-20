@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Render } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render, Res } from '@nestjs/common';
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminOrderService } from './order.service';
 
@@ -59,11 +59,27 @@ export class AdminOrderController {
             },
         );
 
-        console.log(order.orderItems[0].book);
-
         return {
             path: 'orders',
             order,
         };
+    }
+
+
+    @Post('order/update/:id')
+    async update(@Param('id') id: string, @Body() params: any, @Res() res) {
+        console.log(params);
+        await this.adminOrderSerivice.update(
+            {
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    status: params.status,
+                }
+            }
+        );
+
+        return res.redirect("/orders");
     }
 }

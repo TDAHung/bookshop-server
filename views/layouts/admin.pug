@@ -9,12 +9,8 @@ html(lang="en")
     link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
     link(href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap", rel="stylesheet")
     link(rel="stylesheet", href="/stylesheets/admin.css")
-    if (path == 'books')
-      link(rel="stylesheet", href="/stylesheets/books.css")
-    else if (path == 'categories')
-      link(rel="stylesheet", href="/stylesheets/categories.css")
-    else if (path == 'orders')
-      link(rel="stylesheet", href="/stylesheets/orders.css")
+    if (path)
+      link(rel="stylesheet", href=`/stylesheets/${path}.css`)
     title Admin - Bookshop
   body
     include ../partials/_header
@@ -57,3 +53,7 @@ html(lang="en")
         block content
 
     script(src="/javascript/main.js")
+    if (path == 'reviews')
+      script(src="/javascript/reviews.js")
+    else if (path = 'orders')
+      script(src="/javascript/order.js")

@@ -1,0 +1,35 @@
+.t-head,
+.t-row {
+    width: calc(100% / 8);
+}
+
+.t-head-wrapper {
+    width: 100%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.t-row-wrapper {
+    width: 100%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.review__id {
+    width: 2rem;
+}
+
+.review__rating {
+    width: 7rem;
+}
+
+
+.t-row.review__rating {
+    color: #facc15;
+}
+
+.review__comment {
+    width: 10rem;
+}
+
+.book__title {}
+
+.book__images {}
