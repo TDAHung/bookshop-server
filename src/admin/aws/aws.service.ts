@@ -28,7 +28,12 @@ export class AwsService {
             }),
         );
 
-        return `https://${bucket_name}.s3.amazonaws.com/${key}`;
+        return {
+            url: `https://${bucket_name}.s3.amazonaws.com/${key}`,
+            key: key,
+            name: file_name,
+            size: file.size,
+        }
     }
 
     async deleteFileFromPublicBucket(key: string): Promise<void> {
