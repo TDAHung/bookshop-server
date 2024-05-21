@@ -1,0 +1,31 @@
+extends ../layouts/admin
+
+block content
+
+
+    div.table.w-full.bg-white.relative
+        a.create-author.absolute.text-2xl(href="authors/create") Add Author
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16.w-full.text-center
+            li.t-head.author__id ID
+            li.t-head.author__firstName First Name
+            li.t-head.author__lastName Last Name
+            li.t-head.author__bio Bio
+            li.t-head.author__thumpnail Thumpnail
+            li.t-head.author__updatedAt Last updated
+        div.line
+        each author in authors
+            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center
+                li.t-row.author__id.text-center= author.id
+                li.t-row.author__firstName.text-center= author.firstName
+                li.t-row.author__lastName.text-center= author.lastName
+                li.t-row.author__bio.text-center.underline.text-blue-500
+                    a(href=`${author.bio}` target="_blank")= author.bio
+                li.t-head.author__thumpnail
+                    img(src=`${author.thumpnail.url}` alt=`${author.thumpnail.name}`)
+                li.t-row.updated_at.text-center= author.updatedAt
+                li.t-row.absolute.t-row-action.action
+                        div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
+                            a(href=`authors/edit/${author.id}`  class="action-path")
+                                img(src="./images/edit.png" alt="")
+                            button(href=`authors/delete/${author.id}` class="action-path")
+                                img(src="./images/delete.png" alt="")
