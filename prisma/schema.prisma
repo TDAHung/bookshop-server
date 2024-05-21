@@ -40,6 +40,7 @@ model Author {
   firstName String
   lastName  String
   bio       String?
+  thumpnail Json?
   createdAt DateTime     @default(now())
   updatedAt DateTime     @default(now())
   books     BookAuthor[]
@@ -50,7 +51,7 @@ model Book {
   title       String
   description String?
   price       Float
-  images      String[]
+  images      Json[]
   discount    Float?         @default(0)
   quantity    Int            @default(1)
   createdAt   DateTime       @default(now())
