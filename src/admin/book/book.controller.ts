@@ -26,8 +26,10 @@ export class AdminBookController {
     @Render('books/index')
     async index(
         @Query('page') page?: string,
-        @Query('limit') limit?: string
+        @Query('limit') limit?: string,
+        @Query('search') searchParams?: string
     ) {
+        const search: string = searchParams || '';
         const take: number | undefined = limit ? Number(limit) : ItemsPerPage.books;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const books = await this.adminBookService.books({
@@ -44,12 +46,31 @@ export class AdminBookController {
                     }
                 }
             },
+            where: {
+                OR: [
+                    {
+                        title: {
+                            contains: search
+                        }
+                    }
+                ]
+            },
             orderBy: {
                 updatedAt: 'asc',
             }
         });
 
-        const total = await this.adminBookService.total();
+        const total = await this.adminBookService.total({
+            where: {
+                OR: [
+                    {
+                        title: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        });
         return {
             path: 'books',
             books,

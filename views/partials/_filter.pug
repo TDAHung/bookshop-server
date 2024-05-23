@@ -1,0 +1,12 @@
+- const transformedPath = path.toLowerCase() === 'categories' ? 'Category' : (path.charAt(0).toUpperCase() + path.slice(1, -1))
+
+.bg-white.relative.p-8.flex.justify-between.rounded-2xl
+    form.search__form(class="w-3/5" action="#" method="get")
+        .search__input__wrapper.p-4.rounded-xl.text-2xl.flex.justify-between.w-full
+            button(type="submit").me-12.ms-8
+                i.fa-solid.fa-magnifying-glass
+            input.search.h-full(class="w-4/5" type="text" name="search" placeholder="Search Here")
+            input.search.h-full(type="number" name="limit" placeholder="Limit per page")
+    a.clear-filter.text-2xl(href=`${path}`) Clear Filter
+    if (path == 'books' || path == 'authors' || path == 'categories')
+        a.create.text-2xl.float-right(href=`${path}/create`)= "Add " + transformedPath

@@ -1,8 +1,9 @@
 extends ../layouts/admin
 
 block content
-    a.create-author.text-2xl.float-right(href="authors/create") Add Author
-    div.table.w-full.bg-white.relative.mt-28.h-full
+    if (paging.total != 0)
+        include ../partials/_filter
+    div.table.w-full.bg-white.relative.mt-12.h-full
         if (paging.total != 0)
             ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16.w-full.text-center
                 li.t-head.author__id ID

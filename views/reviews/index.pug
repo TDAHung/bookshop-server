@@ -1,7 +1,9 @@
 extends ../layouts/admin
 
 block content
-    div.table.w-full.bg-white.relative.h-full
+    if (paging.total != 0)
+        include ../partials/_filter
+    div.table.w-full.bg-white.relative.h-full.mt-12
         if (paging.total != 0)
             ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
                 li.t-head.review__id ID
