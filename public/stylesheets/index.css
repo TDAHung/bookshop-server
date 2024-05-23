@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --BG-COLOR: #F2F8FF;
+    --TEXT-COLOR: #806BF6;
+    --ACTIVE-COLOR: #F5F3FF;
+    --UNACTIVE-COLOR: #7C7C7C;
+}
+
+html {
+    font-size: 62.5%;
+    height: 100%;
+}
+
+body {
+    background-color: var(--BG-COLOR);
+    background-size: cover;
+    height: 100%;
+}
+
+
+ul {
+    list-style-type: none;
+}
+
+img {
+    width: 100%;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+}

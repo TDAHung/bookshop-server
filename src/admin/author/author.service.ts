@@ -89,7 +89,15 @@ export class AdminAuthorService {
                 }
             })
         } catch (error) {
+            throw new HttpException({ message: error }, HttpStatus.NOT_FOUND);
+        }
+    }
 
+    total = async () => {
+        try {
+            return await this.prismaService.author.count();
+        } catch (error) {
+            throw new HttpException({ message: error }, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -2,17 +2,18 @@ import { Body, Controller, Get, Post, Query, Render, Req, Res } from '@nestjs/co
 import { AdminCategoryService } from './category.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
 
-@Controller()
+@Controller("categories")
 export class AdminCategoryController {
 
     constructor(private readonly categoryService: AdminCategoryService) { }
 
-    @Get("categories")
+    @Get()
     @Render('categories/index')
     async index(
-        @Query('page') page?: string
+        @Query('page') page?: string,
+        @Query('limit') limit?: string,
     ) {
-        const take: number | undefined = ItemsPerPage.categories;
+        const take: number | undefined = limit ? Number(limit) : ItemsPerPage.categories;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const categories = await this.categoryService.categories({
             take,
@@ -22,13 +23,20 @@ export class AdminCategoryController {
             }
         });
 
+        const total = await this.categoryService.total();
+
         return {
             path: 'categories',
             categories,
+            paging: {
+                total,
+                page: Number(page),
+                totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
+            }
         }
     }
 
-    @Get("categories/create")
+    @Get("create")
     @Render('categories/create')
     async create() {
         return {
@@ -36,7 +44,7 @@ export class AdminCategoryController {
         }
     }
 
-    @Post("categories/new")
+    @Post("new")
     async newCategory(@Body() params: any, @Res() res) {
         await this.categoryService.create({
             name: params.name,

@@ -1,12 +1,13 @@
 import { AwsService } from './../aws/aws.service';
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Render, Res, UploadedFile, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Render, Res, UploadedFile, UseFilters, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { AdminAuthorService } from "./author.service";
 import { ItemsPerPage } from "src/global/globalPaging";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateAuthorDTO } from './dto/create-author.dto';
-import { AuthorEntity } from './entity/author.entity';
+import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
 @Controller('authors')
+@UseFilters(AuthExceptionFilter)
 export class AdminAuthorController {
     constructor(
         private readonly adminAuthorService: AdminAuthorService,
@@ -16,9 +17,10 @@ export class AdminAuthorController {
     @Get()
     @Render('authors/index')
     async index(
-        @Query('page') page?: string
+        @Query('page') page?: string,
+        @Query('limit') limit?: string,
     ) {
-        const take: number | undefined = ItemsPerPage.books;
+        const take: number | undefined = limit ? Number(limit) : ItemsPerPage.books;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const authors = await this.adminAuthorService.authors({
             take,
@@ -28,9 +30,16 @@ export class AdminAuthorController {
             }
         });
 
+        const total = await this.adminAuthorService.total();
+
         return {
             path: 'authors',
             authors,
+            paging: {
+                total,
+                page: Number(page),
+                totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
+            }
         }
     }
 

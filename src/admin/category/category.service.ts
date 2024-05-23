@@ -52,6 +52,14 @@ export class AdminCategoryService {
         return categories;
     }
 
+    total = async (): Promise<number> => {
+        try {
+            return await this.prismaService.category.count();
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
     create = async (
         data: Prisma.CategoryUncheckedCreateInput,
     ): Promise<CategoryModel | null> => {

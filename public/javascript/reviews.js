@@ -1,5 +1,4 @@
 (() => {
-
     const renderStarRating = (rating) => {
         let starsHTML = '';
         for (let i = 1; i <= 5; i++) {

@@ -17,10 +17,12 @@ block content
                 li.t-row.review__rating.text-center= review.rating
                 li.t-row.review__comment= review.comment
                 li.t-row.book__title= review.book.title
-                li.t-row.book__images= review.book.images
+                li.t-row.book__images
+                    img(src=`${review.book.images[0].url}`)
                 li.t-row.review__commentor
                     if (review.book.user)
                         = review.book.user.firstname
                     else
                         | Anonymous
                 li.t-row.created_at= review.createdAt
+    include ../partials/_paging

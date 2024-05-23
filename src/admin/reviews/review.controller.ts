@@ -1,15 +1,23 @@
+import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminReviewService } from './review.service';
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Render } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render } from '@nestjs/common';
 
-@Controller()
+@Controller("reviews")
 export class AdminReviewController {
 
     constructor(private readonly adminReviewService: AdminReviewService) { }
-    @Get("reviews")
+    @Get()
     @Render('reviews/index')
-    async index() {
+    async index(
+        @Query('page') page?: string,
+        @Query('limit') limit?: string,
+    ) {
+        const take: number | undefined = limit ? Number(limit) : ItemsPerPage.reviews;
+        const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const reviews = await this.adminReviewService.reviews({
+            take,
+            skip,
             include: {
                 user: true,
                 book: true,
@@ -18,36 +26,16 @@ export class AdminReviewController {
                 bookId: 'desc'
             }
         });
-        console.log(reviews);
+
+        const total = await this.adminReviewService.total();
         return {
             path: 'reviews',
             reviews,
-        }
-    }
-
-    @Get("reviews/create")
-    @Render('reviews/create')
-    create() {
-        return {
-            book: {
-                name: "asdasd"
+            paging: {
+                total,
+                page: Number(page),
+                totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
             }
         }
-    }
-
-
-    @Get("reviews/edit")
-    @Render('reviews/edit')
-    edit(@Param('id') id: number) {
-
-        return {
-            book: {}
-        }
-    }
-
-
-    @Post("reviews/new")
-    createBook(@Body() params: any) {
-        return params.name;
     }
 }

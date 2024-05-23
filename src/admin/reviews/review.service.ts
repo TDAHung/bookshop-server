@@ -46,4 +46,23 @@ export class AdminReviewService {
         return reviews;
     }
 
+    total = async (): Promise<number> => {
+        try {
+            return await this.prismaService.review.count();
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    avgStar = async (): Promise<number> => {
+        try {
+            const avgStar = await this.prismaService.$queryRaw`
+            select AVG(r.rating) AS avg_rating
+            from "Review" r;`;
+            return Number(parseFloat(avgStar[0].avg_rating).toFixed(2));
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
