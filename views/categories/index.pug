@@ -10,9 +10,10 @@ block content
             li.t-head Last updated at
         div.line
         each category in categories
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg
-                li.t-row.category__id= category.id
-                li.t-row.category__name= category.name
-                li.t-row= category.description
-                li.t-row.updated_at= category.updatedAt
+            a.t-row-wrapper.ml-8.flex.justify-between.text-lg(href=`/category/edit/${category.id}` class="hover:bg-slate-100 transition-colors")
+                div.t-row.category__id= category.id
+                div.t-row.category__name= category.name
+                div.t-row= category.description
+                div.t-row.updated_at= category.updatedAt
+    include ../partials/_paging
 

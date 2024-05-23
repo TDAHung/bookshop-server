@@ -1,4 +1,53 @@
 extends ../layouts/admin
 
 block content
-    div asdasds
+    .grid.grid-cols-4.gap-4
+        .rounded-3xl.bg-white.text-center.flex.flex-col.justify-between.py-4
+            .card__header.font-black.text-2xl.font-black Most Popular Book
+            .book__title.text-xl.my-4
+                = "Name: " + mostPopularBook.title
+            .book__image.flex.justify-center
+                .image__cover
+                    img(src=`${mostPopularBook.images[0].url}`, alt="")
+            .book__rating
+                =mostPopularBook.avg_rating
+        .rounded-3xl.bg-white.text-center.pt-4
+            .card__header.font-black.text-2xl Total Revenue Last 6 Months
+            .total__last3mont.text-4xl.font-black.mt-20= total6months + " USD"
+        .rounded-3xl.bg-white.text-center.pt-4
+            .card__header.font-black.text-2xl Stars of Bookshop
+            .rating.mt-20
+                .shop__rating.text-2xl= avgReviewStars
+                .shop__rating__detail.text-2xl.font-black= avgReviewStars
+        .rounded-3xl.bg-white.text-center.py-4
+            .card__header.font-black.text-2xl Customer Most Revenue
+            .user.mt-12.text-2xl.flex.flex-col.items-center
+                .user__name= "Full Name: " + userWithMostTotalOrder.full_name
+                .user__total__revenue= "Total: " + userWithMostTotalOrder.max_total + " USD"
+                .user__total__orders.completed.mt-4= userWithMostTotalOrder.total_orders + " Orders Completed"
+        .card__chartline.col-span-4.bg-white.rounded-3xl.p-8
+            .card__header.font-black.text-2xl.font-black.ms-20 Chart Last 12 Months Revenue
+            canvas#myChart
+            div.hidden#lineChartData
+                each totalPerMonth in totalPrice
+                    div.per_month
+                        div.month=totalPerMonth.month
+                        div.total_price= totalPerMonth.total_price
+        .rounded-3xl.bg-white.col-span-4.py-4
+            .card__header.font-black.text-2xl.font-black.ms-20 Incoming Orders
+            div.table.w-full.bg-white
+                ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
+                    li.t-head.order__id ID
+                    li.t-head.order__total.text-center Total (USD)
+                    li.t-head.order__address Address
+                    li.t-head.order__status.text-center Status
+                    li.t-head Last updated
+            div.line
+            each order in orders
+                a.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative(href=`/orders/edit/${order.id}` class="hover:bg-slate-100 transition-colors")
+                    div.t-row.order__id= order.id
+                    div.t-row.order__total.text-center= order.total
+                    div.t-row.order__address= order.address
+                    div.t-row.order__status.text-center.pending= order.status
+                    div.t-row.updated_at= order.updatedAt
+

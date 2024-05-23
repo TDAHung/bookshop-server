@@ -2,7 +2,7 @@ extends ../layouts/admin
 
 block content
 
-    form.create-book-form(action="new", method="post" enctype="multipart/form-data")
+    form.create-book-form(action="new" method="post" enctype="multipart/form-data")
         .space-y-12
             .border-b.pb-12(class='border-gray-900/10')
                 h2.font-semibold.leading-7.text-gray-900.text-4xl Book
@@ -40,7 +40,16 @@ block content
                                 .text-sm.leading-6
                                     label.font-medium.text-gray-900.text-xl(for='categories') #{category.name}
                                     p.text-gray-500.text-lg #{category.description}
-
+            h2.text-2xl.font-semibold.leading-7.text-gray-900.mt-8 Authors
+            .space-y-10
+                fieldset
+                    .mt-6.space-y-6
+                        each author in authors
+                            .relative.flex.gap-x-3
+                                .flex.h-6.items-center
+                                    input#comments.h-4.w-4.rounded.border-gray-300.text-indigo-600(name='authors' type='checkbox' class='focus:ring-indigo-600' value=author.id)
+                                .text-sm.leading-6
+                                    label.font-medium.text-gray-900.text-xl(for='categories') #{author.firstName} #{author.lastName}
 
         .mt-6.flex.items-center.justify-end.gap-x-6
             button.text-2xl.font-semibold.leading-6.text-gray-900(type='button') Cancel
