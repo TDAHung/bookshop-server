@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    script(src="https://cdn.tailwindcss.com")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap", rel="stylesheet")
+    link(rel="stylesheet", href="/stylesheets/index.css")
+    link(rel="stylesheet", href="/stylesheets/auth.css")
+    title Admin - Bookshop
+  body
+
+    .m-auto(class="w-2/6 h-full").flex.justify-center.items-center
+        div(class="h-3/4").w-full.bg-white.rounded-3xl.auth__wrapper
+            div.project__name.text-center.font-extrabold.text-6xl.pt-32.pb-8
+                | Bookshop Admin
+            div.font-extralight.text-center.text-lg Please input your details.
+            block content

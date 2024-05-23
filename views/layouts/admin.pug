@@ -8,6 +8,7 @@ html(lang="en")
     link(rel="preconnect", href="https://fonts.googleapis.com")
     link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
     link(href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap", rel="stylesheet")
+    link(rel="stylesheet", href="/stylesheets/index.css")
     link(rel="stylesheet", href="/stylesheets/admin.css")
     if (path)
       link(rel="stylesheet", href=`/stylesheets/${path}.css`)
@@ -18,8 +19,8 @@ html(lang="en")
       div.project__name.text-center.font-extrabold.text-5xl.py-16
         | Bookshop
       ul.navbar__list.text-3xl
-        li.navbar__link.px-8.h-20(class= path === '/' ? 'active' : '')
-          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === '/' ? 'active' : '')
+        li.navbar__link.px-8.h-20(class= path === 'homes' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'homes' ? 'active' : '')
             a(href="/")
               i.fa-solid.fa-chart-line
               |  Dashboard
@@ -43,17 +44,36 @@ html(lang="en")
             a(href="/orders")
               i.fa-solid.fa-cart-shopping
               |  Order
+        li.navbar__link.px-8.h-20(class= path === 'authors' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'authors' ? 'active' : '')
+            a(href="/authors")
+              i.fa-solid.fa-pencil
+              |  Authors
         li.navbar__link.px-8.h-20(class= path === 'about' ? 'active' : '')
           div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
             a(href="/about")
               i.fa-regular.fa-address-card
               |  About
+        li.navbar__link.px-8.h-20.mt-64(class= path === 'about' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
+            a(href="/logout")
+              i.fa-solid.fa-arrow-right-from-bracket
+              |  Logout
+
     div.content.absolute.end-0
       div.container.p-8.rounded-s-md
         block content
 
     script(src="/javascript/main.js")
-    if (path == 'reviews')
+    if (path == 'books')
+      script(src="/javascript/books.js")
+      script(src="/javascript/paging.js")
+    else if (path == 'reviews')
       script(src="/javascript/reviews.js")
-    else if (path = 'orders')
+      script(src="/javascript/paging.js")
+    else if (path == 'orders')
       script(src="/javascript/order.js")
+      script(src="/javascript/paging.js")
+    else if(path == "homes")
+      script(src="https://cdn.jsdelivr.net/npm/chart.js")
+      script(src="/javascript/homes.js")

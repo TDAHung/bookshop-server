@@ -1,0 +1,18 @@
+extends ../layouts/auth
+
+block content
+    form.my-32(action="login/new" method="post")
+        .px-28(class='w-full')
+            label.block.text-2xl.font-medium.leading-6.text-gray-900(for='username') Email
+            .mt-2
+                .w-full.flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600')
+                    input#email.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='email' name='email' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='username')
+            .mt-4
+            label.block.text-2xl.font-medium.leading-6.text-gray-900.mt-4(for='username') Password
+            .mt-2
+                .w-full.flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600')
+                    input#password.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='password' name='password' autocomplete='password' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='password')
+            .mt-8
+                button.w-full.rounded-md.bg-indigo-600.px-3.py-2.text-2xl.font-semibold.text-white.shadow-sm(type='submit' class='hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600') Sign In
+            .mt-8
+                div.font-extralight.text-center.text-lg.text-red-600= message
