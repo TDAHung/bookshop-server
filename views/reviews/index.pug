@@ -1,28 +1,36 @@
 extends ../layouts/admin
 
 block content
-    div.table.w-full.bg-white.relative
-        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
-            li.t-head.review__id ID
-            li.t-head.review__rating.text-center Rating
-            li.t-head.review__comment Comment
-            li.t-head.book__title Book Title
-            li.t-head.book__images Book Images
-            li.t-head.review__commentor Commentor
-            li.t-head.review__createdAt Created at
-        div.line
-        each review in reviews
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative
-                li.t-row.review__id.text-center= review.id
-                li.t-row.review__rating.text-center= review.rating
-                li.t-row.review__comment= review.comment
-                li.t-row.book__title= review.book.title
-                li.t-row.book__images
-                    img(src=`${review.book.images[0].url}`)
-                li.t-row.review__commentor
-                    if (review.book.user)
-                        = review.book.user.firstname
-                    else
-                        | Anonymous
-                li.t-row.created_at= review.createdAt
-    include ../partials/_paging
+    div.table.w-full.bg-white.relative.h-full
+        if (paging.total != 0)
+            ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
+                li.t-head.review__id ID
+                li.t-head.review__rating.text-center Rating
+                li.t-head.review__comment Comment
+                li.t-head.book__title Book Title
+                li.t-head.book__images Book Images
+                li.t-head.review__commentor Commentor
+                li.t-head.review__createdAt Created at
+            div.line
+            each review in reviews
+                ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative
+                    li.t-row.review__id.text-center= review.id
+                    li.t-row.review__rating.text-center= review.rating
+                    li.t-row.review__comment= review.comment
+                    li.t-row.book__title= review.book.title
+                    li.t-row.book__images
+                        img(src=`${review.book.images[0].url}`)
+                    li.t-row.review__commentor
+                        if (review.book.user)
+                            = review.book.user.firstname
+                        else
+                            | Anonymous
+                    li.t-row.created_at= review.createdAt
+            include ../partials/_paging
+        else
+            div.w-full.flex.justify-center.h-full.items-center
+                div.empty-data.text-center
+                    i.fa-regular.fa-folder-open
+                    div Empty data
+
+

@@ -1,5 +1,5 @@
 import { AwsService } from './../aws/aws.service';
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Render, Res, UploadedFile, UseFilters, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Render, Res, UploadedFile, UseFilters, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { AdminAuthorService } from "./author.service";
 import { ItemsPerPage } from "src/global/globalPaging";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -79,9 +79,8 @@ export class AdminAuthorController {
     }
 
     @Get('delete/:id')
-    @UseInterceptors(FileInterceptor('thumpnail'))
     async delete(
-        @Query('id') id: string,
+        @Param('id') id: string,
         @Res() res: any
     ) {
         try {

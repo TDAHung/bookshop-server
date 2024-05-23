@@ -60,8 +60,8 @@ html(lang="en")
               i.fa-solid.fa-arrow-right-from-bracket
               |  Logout
 
-    div.content.absolute.end-0
-      div.container.p-8.rounded-s-md
+    div.content.absolute.end-0(class="h-4/5")
+      div.container.p-8.rounded-s-md.h-full
         block content
 
     script(src="/javascript/main.js")
@@ -77,3 +77,5 @@ html(lang="en")
     else if(path == "homes")
       script(src="https://cdn.jsdelivr.net/npm/chart.js")
       script(src="/javascript/homes.js")
+    else if(path == "authors")
+      script(src="/javascript/authors.js")

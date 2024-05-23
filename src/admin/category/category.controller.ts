@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, Query, Render, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Render, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { AdminCategoryService } from './category.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
 @UseGuards(AuthenticatedGuard)
 @UseFilters(AuthExceptionFilter)
@@ -14,18 +16,38 @@ export class AdminCategoryController {
     async index(
         @Query('page') page?: string,
         @Query('limit') limit?: string,
+        @Query('search') searchParams?: string,
     ) {
+        const search: string = searchParams || '';
         const take: number | undefined = limit ? Number(limit) : ItemsPerPage.categories;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const categories = await this.categoryService.categories({
             take,
             skip,
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: search
+                        }
+                    }
+                ]
+            },
             orderBy: {
                 name: 'desc'
             }
         });
-
-        const total = await this.categoryService.total();
+        let total = await this.categoryService.total({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        });
 
         return {
             path: 'categories',

@@ -1,34 +1,40 @@
 extends ../layouts/admin
 
 block content
-    div.table.w-full.bg-white
-        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
-            li.t-head.order__id ID
-            li.t-head.order__total.text-center Total (USD)
-            li.t-head.order__address Address
-            li.t-head.order__customer Customer
-            li.t-head.order__status.text-center Status
-            li.t-head Last updated
-        div.line
-        each order in orders
-            a.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative(href=`orders/edit/${order.id}` class="hover:bg-slate-100 transition-colors")
-                div.t-row.order__id= order.id
-                div.t-row.order__total.text-center= order.total
-                div.t-row.order__address= order.address
-                div.t-row.order__customer
-                    if (order.user)
-                        = order.user.firstName + " " + order.user.lastName
-                    else
-                        | Anonymous
-                if (order.status == 'COMPLETED')
-                    div.t-row.order__status.text-center.completed= order.status
-                else if (order.status == 'CANCELED')
-                    div.t-row.order__status.text-center.cancel= order.status
-                else if (order.status == 'SHIPPED')
-                    div.t-row.order__status.text-center.shipped= order.status
-                else if (order.status == 'PENDING')
-                    div.t-row.order__status.text-center.pending= order.status
-                else if (order.status == 'SHIPPING')
-                    div.t-row.order__status.text-center.shipping= order.status
-                div.t-row.updated_at= order.updatedAt
-    include ../partials/_paging
+    div.table.w-full.bg-white.h-full
+        if (paging.total != 0)
+            ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl
+                li.t-head.order__id ID
+                li.t-head.order__total.text-center Total (USD)
+                li.t-head.order__address Address
+                li.t-head.order__customer Customer
+                li.t-head.order__status.text-center Status
+                li.t-head Last updated
+            div.line
+            each order in orders
+                a.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative(href=`orders/edit/${order.id}` class="hover:bg-slate-100 transition-colors")
+                    div.t-row.order__id= order.id
+                    div.t-row.order__total.text-center= order.total
+                    div.t-row.order__address= order.address
+                    div.t-row.order__customer
+                        if (order.user)
+                            = order.user.firstName + " " + order.user.lastName
+                        else
+                            | Anonymous
+                    if (order.status == 'COMPLETED')
+                        div.t-row.order__status.text-center.completed= order.status
+                    else if (order.status == 'CANCELED')
+                        div.t-row.order__status.text-center.cancel= order.status
+                    else if (order.status == 'SHIPPED')
+                        div.t-row.order__status.text-center.shipped= order.status
+                    else if (order.status == 'PENDING')
+                        div.t-row.order__status.text-center.pending= order.status
+                    else if (order.status == 'SHIPPING')
+                        div.t-row.order__status.text-center.shipping= order.status
+                    div.t-row.updated_at= order.updatedAt
+            include ../partials/_paging
+        else
+            div.w-full.flex.justify-center.h-full.items-center
+                div.empty-data.text-center
+                    i.fa-regular.fa-folder-open
+                    div Empty data

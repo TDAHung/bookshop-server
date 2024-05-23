@@ -7,7 +7,7 @@ interface IItemsPerPage {
 }
 
 export const ItemsPerPage: IItemsPerPage = {
-    categories: 3,
+    categories: 8,
     books: 2,
     orders: 10,
     authors: 10,

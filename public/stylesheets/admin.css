@@ -14,7 +14,6 @@ header {
 
 .project__name {
     color: var(--TEXT-COLOR);
-    font-family: 'Montserrat', sans-serif;
 }
 
 .navbar__link.active {
@@ -86,4 +85,56 @@ input[type="text"].search:visited {
 
 .action-path {
     width: 1.5rem;
+}
+
+.empty-data {
+    font-size: 15rem;
+    color: #aaa;
+}
+
+.empty-data div {
+    font-size: 7rem;
+}
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    height: 25rem;
+}
+
+#close-modal:hover,
+#close-modal:focus {
+    color: white;
+    background-color: #aaa;
+}
+
+#confirm-modal:hover,
+#confirm-modal:focus {
+    color: white;
+    background-color: red;
+}
+
+#close-modal {
+    color: #aaa;
+}
+
+#confirm-modal {
+    color: red;
+    border: red 0.1rem solid;
 }

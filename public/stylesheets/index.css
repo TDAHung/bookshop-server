@@ -20,6 +20,7 @@ body {
     background-color: var(--BG-COLOR);
     background-size: cover;
     height: 100%;
+    font-family: 'Montserrat', sans-serif;
 }
 
 

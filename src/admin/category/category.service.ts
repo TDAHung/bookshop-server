@@ -52,9 +52,14 @@ export class AdminCategoryService {
         return categories;
     }
 
-    total = async (): Promise<number> => {
+    total = async (
+        params: { where?: Prisma.CategoryWhereInput, }
+    ): Promise<number> => {
         try {
-            return await this.prismaService.category.count();
+            const { where } = params;
+            return await this.prismaService.category.count({
+                where
+            });
         } catch (error) {
             throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
         }

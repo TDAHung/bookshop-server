@@ -20,7 +20,15 @@
 }
 
 .book__category {
-    width: 4rem;
+    width: 10rem;
+}
+
+.image-wrapper img {
+    height: 7rem;
+}
+
+.action {
+    transform: translateY(15%);
 }
 
 .create-book {

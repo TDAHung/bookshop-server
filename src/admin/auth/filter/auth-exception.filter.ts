@@ -24,7 +24,7 @@ export class AuthExceptionFilter implements ExceptionFilter {
             exception instanceof ForbiddenException
 
         ) {
-            request.flash('Error', 'Please try again!');
+            request.flash('Error', 'You need to Login to exceed!');
             response.redirect('/login');
         } else {
             response.redirect('/error');
