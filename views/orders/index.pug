@@ -6,26 +6,29 @@ block content
             li.t-head.order__id ID
             li.t-head.order__total.text-center Total (USD)
             li.t-head.order__address Address
+            li.t-head.order__customer Customer
             li.t-head.order__status.text-center Status
             li.t-head Last updated
         div.line
         each order in orders
-            ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative
-                li.t-row.order__id= order.id
-                li.t-row.order__total.text-center= order.total
-                li.t-row.order__address= order.address
+            a.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center.relative(href=`orders/edit/${order.id}` class="hover:bg-slate-100 transition-colors")
+                div.t-row.order__id= order.id
+                div.t-row.order__total.text-center= order.total
+                div.t-row.order__address= order.address
+                div.t-row.order__customer
+                    if (order.user)
+                        = order.user.firstName + " " + order.user.lastName
+                    else
+                        | Anonymous
                 if (order.status == 'COMPLETED')
-                    li.t-row.order__status.text-center.completed= order.status
+                    div.t-row.order__status.text-center.completed= order.status
                 else if (order.status == 'CANCELED')
-                    li.t-row.order__status.text-center.cancel= order.status
+                    div.t-row.order__status.text-center.cancel= order.status
                 else if (order.status == 'SHIPPED')
-                    li.t-row.order__status.text-center.shipped= order.status
+                    div.t-row.order__status.text-center.shipped= order.status
                 else if (order.status == 'PENDING')
-                    li.t-row.order__status.text-center.pending= order.status
+                    div.t-row.order__status.text-center.pending= order.status
                 else if (order.status == 'SHIPPING')
-                    li.t-row.order__status.text-center.shipping= order.status
-                li.t-row.updated_at= order.updatedAt
-                li.t-row.t-row-action.absolute.action
-                        div.absolute(class="right-1/4")
-                            a(href=`order/edit/${order.id}`  class="action-path")
-                                img(src="./images/edit.png" alt="")
+                    div.t-row.order__status.text-center.shipping= order.status
+                div.t-row.updated_at= order.updatedAt
+    include ../partials/_paging

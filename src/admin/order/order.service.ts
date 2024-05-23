@@ -47,6 +47,35 @@ export class AdminOrderService {
         return reivews;
     }
 
+    total = async (): Promise<number> => {
+        try {
+            return await this.prismaService.order.count();
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    totalPrice = async (
+        limit?: number
+    ) => {
+        try {
+            return await this.prismaService.$queryRaw`SELECT
+            TO_CHAR("updatedAt", 'YYYY-MM') AS "month",
+            SUM(total) AS total_price
+        FROM
+            public."Order"
+        WHERE
+            status = 'COMPLETED'
+        GROUP BY
+            TO_CHAR("updatedAt", 'YYYY-MM')
+        ORDER BY
+            "month" DESC
+        LIMIT ${limit};`;
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
     update = async (
         params: {
             where: Prisma.OrderWhereUniqueInput,

@@ -2,7 +2,7 @@ extends ../layouts/admin
 
 block content
 
-    form.edit-order-form.text-xl(action=`/order/update/${order.id}` method="post")
+    form.edit-order-form.text-xl(action=`/orders/update/${order.id}` method="post")
         .space-y-12
             .border-b.pb-12(class='border-gray-900/10')
                 h2.font-semibold.leading-7.text-gray-900.text-4xl Order ID: #{order.id}

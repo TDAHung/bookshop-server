@@ -2,14 +2,17 @@ import { Body, Controller, Get, Param, Post, Query, Render, Res } from '@nestjs/
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminOrderService } from './order.service';
 
-@Controller()
+@Controller("orders")
 export class AdminOrderController {
     constructor(private readonly adminOrderSerivice: AdminOrderService) { }
 
-    @Get('orders')
+    @Get()
     @Render('orders/index')
-    async index(@Query('page') page?: string) {
-        const take: number | undefined = ItemsPerPage.books;
+    async index(
+        @Query('page') page?: string,
+        @Query('limit') limit?: string,
+    ) {
+        const take: number | undefined = limit ? Number(limit) : ItemsPerPage.orders;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const orders = await this.adminOrderSerivice.orders({
             take,
@@ -17,32 +20,30 @@ export class AdminOrderController {
             include: {
                 user: {
                     select: {
-                        id: true,
-                    },
-                },
-                orderItems: {
-                    include: {
-                        book: {
-                            select: {
-                                images: true,
-                                title: true,
-                            },
-                        },
-                    },
-                },
+                        firstName: true,
+                        lastName: true
+                    }
+                }
             },
             orderBy: {
-                updatedAt: 'desc',
+                updatedAt: 'asc',
             },
         });
+        const total = await this.adminOrderSerivice.total();
 
         return {
             path: 'orders',
             orders,
+            paging: {
+                total,
+                page: Number(page),
+                limit,
+                totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
+            }
         };
     }
 
-    @Get('order/edit/:id')
+    @Get('edit/:id')
     @Render('orders/edit')
     async edit(@Param('id') id: string) {
         const order = await this.adminOrderSerivice.order(
@@ -50,7 +51,13 @@ export class AdminOrderController {
                 id: Number(id),
             },
             {
-                user: true,
+                user: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                    }
+                },
                 orderItems: {
                     include: {
                         book: true,
@@ -66,7 +73,7 @@ export class AdminOrderController {
     }
 
 
-    @Post('order/update/:id')
+    @Post('update/:id')
     async update(@Param('id') id: string, @Body() params: any, @Res() res) {
         console.log(params);
         await this.adminOrderSerivice.update(
