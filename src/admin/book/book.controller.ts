@@ -1,31 +1,38 @@
 import { AdminBookCategoryService } from './../book_category/book_category.service';
-import { Body, Controller, Get, Param, Patch, Post, Query, Render, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, Render, Res, UploadedFile, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AdminBookService } from './book.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
-import { Book as BookModel } from '@prisma/client';
 import { AdminCategoryService } from '../category/category.service';
-import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { AwsService } from '../aws/aws.service';
-@Controller()
+import { AdminAuthorService } from '../author/author.service';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+
+// @UseGuards(AuthenticatedGuard)
+// @UseFilters(AuthExceptionFilter)
+@Controller('books')
 export class AdminBookController {
 
     constructor(
         private readonly adminBookService: AdminBookService,
         private readonly adminCategoryService: AdminCategoryService,
         private readonly adminBookCategoryService: AdminBookCategoryService,
+        private readonly adminAuthorService: AdminAuthorService,
         private readonly awsService: AwsService
     ) { }
 
-    @Get("books")
+    @Get()
     @Render('books/index')
     async index(
-        @Query('page') page?: string
+        @Query('page') page?: string,
+        @Query('limit') limit?: string
     ) {
-        const take: number | undefined = ItemsPerPage.books;
+        const take: number | undefined = limit ? Number(limit) : ItemsPerPage.books;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const books = await this.adminBookService.books({
-            // take,
-            // skip,
+            take,
+            skip,
             include: {
                 categories: {
                     select: {
@@ -42,13 +49,19 @@ export class AdminBookController {
             }
         });
 
+        const total = await this.adminBookService.total();
         return {
             path: 'books',
             books,
+            paging: {
+                total,
+                page: Number(page),
+                totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
+            }
         }
     }
 
-    @Get("books/create")
+    @Get("create")
     @Render('books/create')
     async create() {
         const categories = await this.adminCategoryService.categories({
@@ -56,13 +69,19 @@ export class AdminBookController {
                 name: 'desc'
             }
         });
+        const authors = await this.adminAuthorService.authors({
+            orderBy: {
+                firstName: 'desc'
+            }
+        });
         return {
             path: 'books',
             categories,
+            authors
         }
     }
 
-    @Post("books/new")
+    @Post("new")
     @UseInterceptors(FilesInterceptor('images'))
     async createBook(@UploadedFiles() files: Array<Express.Multer.File>, @Body() params: any, @Res() res) {
         try {
@@ -75,46 +94,58 @@ export class AdminBookController {
                 images.push(url);
             }
 
-            if (params.categories) {
-                if (!Array.isArray(params.categories)) {
-                    params.categories = params.categories.split('');
+            let categories = params.categories ?? null;
+            let authors = params.authors ?? null;
+            let connectCategories: any = undefined;
+            let connectAuthor: any = undefined;
+            if (categories) {
+                if (!Array.isArray(categories)) {
+                    categories = categories.split('');
                 }
-                const connectCategory = params.categories.map((categoryId: string) => {
-                    return {
-                        category: {
-                            connect: {
-                                id: parseInt(categoryId),
+                connectCategories = {
+                    create: categories.map((categoryId: string) => {
+                        return {
+                            category: {
+                                connect: {
+                                    id: parseInt(categoryId),
+                                }
                             }
                         }
-                    }
-                });
-                await this.adminBookService.create({
-                    title: params.title,
-                    price: parseFloat(params.price),
-                    description: params.description,
-                    categories: {
-                        create: connectCategory
-                    },
-                    images
-                });
-            } else {
+                    })
+                };
 
-                await this.adminBookService.create({
-                    title: params.title,
-                    price: parseFloat(params.price),
-                    description: params.description,
-                    images
-                });
             }
-
-
+            if (authors) {
+                if (!Array.isArray(authors)) {
+                    authors = authors.split('');
+                }
+                connectAuthor = {
+                    create: authors.map((authorId: string) => {
+                        return {
+                            author: {
+                                connect: {
+                                    id: parseInt(authorId)
+                                }
+                            }
+                        }
+                    })
+                };
+            }
+            await this.adminBookService.create({
+                title: params.title,
+                price: parseFloat(params.price),
+                description: params.description,
+                categories: connectCategories,
+                authors: connectAuthor,
+                images
+            });
             return res.redirect("/books");
         } catch (error) {
             console.log(error);
         }
     }
 
-    @Get("books/edit/:id")
+    @Get("edit/:id")
     @Render('books/edit')
     async edit(@Param('id') id: number) {
         const book = await this.adminBookService.book({
@@ -136,7 +167,7 @@ export class AdminBookController {
         }
     }
 
-    @Post("books/update/:id")
+    @Post("update/:id")
     async updateBook(@Body() params: any, @Param('id') id: number, @Res() res) {
         if (!Array.isArray(params.categories)) {
             params.categories = params.categories.split('');
@@ -172,16 +203,14 @@ export class AdminBookController {
         return res.redirect("/books");
     }
 
-    @Get("books/delete/:id")
+    @Get("delete/:id")
     async deleteBook(@Param('id') id: string, @Res() res) {
         const book = await this.adminBookService.delete({
             id: Number(id)
         });
         if (book.images) {
-            book.images.forEach((image) => {
-                const parts = image.split('/');
-                const key = parts.slice(3).join('/');
-                this.awsService.deleteFileFromPublicBucket(key);
+            book.images.forEach((image: any) => {
+                this.awsService.deleteFileFromPublicBucket(image.key);
             });
         }
         return res.redirect("/books")

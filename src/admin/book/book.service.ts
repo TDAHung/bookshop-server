@@ -1,15 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Book as BookModel, Prisma } from '@prisma/client';
+import { BookEntity } from './entity/book.entity';
 
 @Injectable()
 export class AdminBookService {
     constructor(private readonly prismaService: PrismaService) { }
-
-    // destructuring = ({ id, image, user, created_at, updated_at }: PostEntity) => {
-    //     const responseProduct: PostEntity = { id, image, user, created_at, updated_at };
-    //     return responseProduct;
-    // }
 
     book = async (
         bookWhereUniqueInput: Prisma.BookWhereUniqueInput,
@@ -46,19 +42,40 @@ export class AdminBookService {
             include,
             orderBy
         });
-
-        // const responsePosts = posts.map((post) => this.destructuring(post));
         return books;
+    }
+
+    total = async (): Promise<number> => {
+        try {
+            return await this.prismaService.book.count();
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    getMostPopularBook = async () => {
+        try {
+            const book = await this.prismaService.$queryRaw`SELECT b.id, b.title, b.images, AVG(r.rating) AS avg_rating
+            FROM "Book" b
+            JOIN "Review" r ON b.id = r."bookId"
+            GROUP BY b.id, b.title
+            ORDER BY AVG(r.rating) DESC
+            LIMIT 1;
+            `;
+            return book[0];
+        } catch (error) {
+            throw new HttpException({ message: error.message }, HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     create = async (
         data: Prisma.BookUncheckedCreateInput,
     ): Promise<BookModel | null> => {
         try {
-            const post = await this.prismaService.book.create({
+            const book = await this.prismaService.book.create({
                 data,
             });
-            return post;
+            return book;
         } catch (error) {
             throw new HttpException({ message: error.message }, HttpStatus.NOT_ACCEPTABLE);
         }
@@ -67,7 +84,7 @@ export class AdminBookService {
     delete = async (
         where: Prisma.BookWhereUniqueInput,
         include?: Prisma.BookInclude
-    ): Promise<BookModel | null> => {
+    ): Promise<BookEntity | null> => {
         try {
             const book = await this.prismaService.book.delete({
                 where,

@@ -1,7 +1,7 @@
 extends ../layouts/admin
 
 block content
-    - const felineAttibutes = (categories) => {
+    - const formatAttributes = (categories) => {
         - if (categories && categories.length > 0) {
             - return categories.map(category => category.category.name).join(', ');
         - } else {
@@ -12,7 +12,7 @@ block content
 
     div.table.w-full.bg-white.relative
         a.create-book.absolute.text-2xl(href="books/create") Add Book
-        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16.w-full
+        ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16.w-full.text-center
             li.t-head.book__id ID
             li.t-head.book__title Title
             li.t-head.book__description Description
@@ -20,20 +20,21 @@ block content
             li.t-head.book__image Images
             li.t-head.book__quantity Quantity
             li.t-head.book__discount Discount (USD)
-            li.t-head Category
+            li.t-head.book__category Category
             li.t-head Last updated
         div.line
         each book in books
             ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center
-                li.t-row.book__id= book.id
-                li.t-row.book__title= book.title
+                li.t-row.book__id.text-center= book.id
+                li.t-row.book__title.text-center= book.title
                 li.t-row.book__description= book.description
-                li.t-row.book__price= book.price
+                li.t-row.book__price.text-center= book.price
                 li.t-row.book__image
-                    img(src=`${book.images[0]}`)
-                li.t-row.book__quantity= book.quantity
-                li.t-row.book__discount= book.discount
-                li.t-row.category= felineAttibutes(book.categories)
+                    if (book.images != [])
+                        img(src=`${book.images[0].url}`)
+                li.t-row.book__quantity.text-center= book.quantity
+                li.t-row.book__discoun.text-center= book.discount
+                li.t-row.book__category.text-center= formatAttributes(book.categories)
                 li.t-row.updated_at= book.updatedAt
                 li.t-row.absolute.t-row-action.action
                         div.absolute.w-20(class="right-1/4").flex.justify-between
@@ -41,3 +42,5 @@ block content
                                 img(src="./images/edit.png" alt="")
                             a(href=`books/delete/${book.id}` class="action-path")
                                 img(src="./images/delete.png" alt="")
+
+    include ../partials/_paging

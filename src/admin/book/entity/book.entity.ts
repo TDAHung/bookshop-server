@@ -1,3 +1,12 @@
+import { JsonObject, JsonValue } from "@prisma/client/runtime/library";
+import { AuthorEntity } from "src/admin/author/entity/author.entity";
+
+export interface ImageJson {
+    url: string,
+    key: string,
+    name: string,
+    size: number
+}
 
 export class BookEntity {
     id: number;
@@ -8,7 +17,7 @@ export class BookEntity {
 
     discount?: number;
 
-    image?: string[];
+    images?: ImageJson[] | JsonValue[];
 
     createdAt?: Date;
 

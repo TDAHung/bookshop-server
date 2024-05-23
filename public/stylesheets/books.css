@@ -12,7 +12,7 @@
 }
 
 .book__price {
-    width: 4rem;
+    width: 5rem;
 }
 
 .book__images {
@@ -20,7 +20,7 @@
 }
 
 .book__category {
-    width: 3rem;
+    width: 4rem;
 }
 
 .create-book {
