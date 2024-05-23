@@ -1,7 +1,11 @@
-import { Body, Controller, Get, Param, Post, Query, Render, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminOrderService } from './order.service';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
+@UseGuards(AuthenticatedGuard)
+@UseFilters(AuthExceptionFilter)
 @Controller("orders")
 export class AdminOrderController {
     constructor(private readonly adminOrderSerivice: AdminOrderService) { }

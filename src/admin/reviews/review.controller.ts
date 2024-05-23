@@ -1,8 +1,11 @@
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminReviewService } from './review.service';
-/* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Query, Render } from '@nestjs/common';
+import { Controller, Get, Query, Render, UseFilters, UseGuards } from '@nestjs/common';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
+@UseGuards(AuthenticatedGuard)
+@UseFilters(AuthExceptionFilter)
 @Controller("reviews")
 export class AdminReviewController {
 

@@ -9,8 +9,8 @@ import { AdminAuthorService } from '../author/author.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
-// @UseGuards(AuthenticatedGuard)
-// @UseFilters(AuthExceptionFilter)
+@UseGuards(AuthenticatedGuard)
+@UseFilters(AuthExceptionFilter)
 @Controller('books')
 export class AdminBookController {
 

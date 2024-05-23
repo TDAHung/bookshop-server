@@ -2,6 +2,8 @@ import { Body, Controller, Get, Post, Query, Render, Req, Res } from '@nestjs/co
 import { AdminCategoryService } from './category.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
 
+@UseGuards(AuthenticatedGuard)
+@UseFilters(AuthExceptionFilter)
 @Controller("categories")
 export class AdminCategoryController {
 
