@@ -15,19 +15,18 @@ export class AuthExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
 
-        if (
-            exception instanceof UnauthorizedException
-        ) {
-            request.flash('Error', 'Wrong EMAIL or PASSWORD!');
-            response.redirect('/login');
-        } else if (
-            exception instanceof ForbiddenException
-
-        ) {
-            request.flash('Error', 'You need to Login to exceed!');
-            response.redirect('/login');
-        } else {
-            response.redirect('/error');
+        switch (true) {
+            case exception instanceof UnauthorizedException:
+                request.flash('Error', 'Wrong EMAIL or PASSWORD!');
+                response.redirect('/login');
+                break;
+            case exception instanceof ForbiddenException:
+                request.flash('Error', 'You need to Login to exceed!');
+                response.redirect('/login');
+                break;
+            default:
+                response.redirect('/error');
+                break;
         }
     }
 }

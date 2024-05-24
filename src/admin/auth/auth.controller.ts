@@ -2,6 +2,7 @@ import { Controller, Get, Post, Render, Req, Res, UnauthorizedException, UseFilt
 import { AdminAuthService } from './auth.service';
 import { LoginGuard } from './guards/login.guard';
 import { AuthExceptionFilter } from './filter/auth-exception.filter';
+import { AuthenticatedGuard } from './guards/authenticated.guard';
 
 @Controller()
 @UseFilters(AuthExceptionFilter)
@@ -10,7 +11,10 @@ export class AdminAuthController {
 
     @Get("/login")
     @Render("auths/login")
-    renderPage(@Req() req): { message: string } {
+    renderPage(@Req() req, @Res() res): { message: string } {
+        if (req.isAuthenticated()) {
+            return res.redirect('/');
+        }
         return {
             message: req.flash('Error')
         }
