@@ -47,9 +47,16 @@ export class AdminOrderService {
         return reivews;
     }
 
-    total = async (): Promise<number> => {
+    total = async (
+        params: {
+            where?: Prisma.OrderWhereInput
+        }
+    ): Promise<number> => {
         try {
-            return await this.prismaService.order.count();
+            const { where } = params
+            return await this.prismaService.order.count({
+                where
+            });
         } catch (error) {
             throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
         }

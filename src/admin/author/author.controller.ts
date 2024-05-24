@@ -1,13 +1,15 @@
 import { AwsService } from './../aws/aws.service';
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Render, Res, UploadedFile, UseFilters, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, Render, Res, UploadedFile, UseFilters, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { AdminAuthorService } from "./author.service";
 import { ItemsPerPage } from "src/global/globalPaging";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateAuthorDTO } from './dto/create-author.dto';
 import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 
 @Controller('authors')
-@UseFilters(AuthExceptionFilter)
+// @UseGuards(AuthenticatedGuard)
+// @UseFilters(AuthExceptionFilter)
 export class AdminAuthorController {
     constructor(
         private readonly adminAuthorService: AdminAuthorService,
@@ -34,6 +36,7 @@ export class AdminAuthorController {
 
         return {
             path: 'authors',
+            method: "index",
             authors,
             paging: {
                 total,
@@ -89,6 +92,55 @@ export class AdminAuthorController {
             return res.redirect("/authors")
         } catch (error) {
             throw new HttpException({ message: error }, HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @Get('edit/:id')
+    @Render("authors/edit")
+    async edit(
+        @Param('id') id: string,
+    ) {
+        try {
+            const author = await this.adminAuthorService.author({
+                where: {
+                    id: Number(id)
+                }
+            });
+            return {
+                path: "authors",
+                method: "edit",
+                author
+            };
+        } catch (error) {
+            throw new HttpException({ message: error }, HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @UseInterceptors(FileInterceptor('thumpnail'))
+    @Post('update/:id')
+    async update(
+        @Param('id') id: string,
+        @UploadedFile() file: Express.Multer.File,
+        @Body(new ValidationPipe()) params: CreateAuthorDTO,
+        @Res() res: any
+    ) {
+        try {
+            // const thumpnail_json = await this.awsService.uploadFileToPublicBucket("authors", {
+            //     file: file,
+            //     file_name: file.originalname
+            // });
+
+            // const author = await this.adminAuthorService.create(
+            //     {
+            //         firstName: params.firstName,
+            //         lastName: params.lastName,
+            //         bio: params.bio,
+            //         thumpnail: thumpnail_json,
+            //     }
+            // );
+            return res.redirect("/authors");
+        } catch (error) {
+
         }
     }
 }

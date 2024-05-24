@@ -8,9 +8,10 @@ import { AwsService } from '../aws/aws.service';
 import { AdminAuthorService } from '../author/author.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { AdminReviewService } from '../reviews/review.service';
 
-@UseGuards(AuthenticatedGuard)
-@UseFilters(AuthExceptionFilter)
+// @UseGuards(AuthenticatedGuard)
+// @UseFilters(AuthExceptionFilter)
 @Controller('books')
 export class AdminBookController {
 
@@ -73,6 +74,7 @@ export class AdminBookController {
         });
         return {
             path: 'books',
+            method: "index",
             books,
             paging: {
                 total,
@@ -97,6 +99,7 @@ export class AdminBookController {
         });
         return {
             path: 'books',
+            method: "create",
             categories,
             authors
         }
@@ -166,9 +169,65 @@ export class AdminBookController {
         }
     }
 
+    @Get("show/:id")
+    @Render('books/show')
+    async show(
+        @Param('id') id: string
+    ) {
+        try {
+            const book = await this.adminBookService.book({
+                id: Number(id)
+            }, {
+                categories: {
+                    select: {
+                        category: {
+                            select: {
+                                name: true,
+                                description: true,
+                            }
+                        }
+                    }
+                },
+                authors: {
+                    select: {
+                        author: {
+                            select: {
+                                firstName: true,
+                                lastName: true,
+                                thumpnail: true,
+                            }
+                        }
+                    }
+                },
+                reviews: {
+                    select: {
+                        rating: true,
+                        comment: true,
+                        user: {
+                            select: {
+                                firstName: true,
+                                lastName: true,
+                                username: true,
+                            }
+                        },
+                    }
+                }
+            });
+
+            console.log(book);
+            return {
+                path: "books",
+                method: "show",
+                book,
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     @Get("edit/:id")
     @Render('books/edit')
-    async edit(@Param('id') id: number) {
+    async edit(@Param('id') id: string) {
         const book = await this.adminBookService.book({
             id: Number(id)
         }, {

@@ -21,26 +21,24 @@ block content
                 li.t-head.book__discount Discount (USD)
                 li.t-head.book__category Category
                 li.t-head Last updated
-            div.line
             each book in books
-                ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center
-                    li.t-row.book__id.text-center= book.id
-                    li.t-row.book__title.text-center= book.title
-                    li.t-row.book__description= book.description
-                    li.t-row.book__price.text-center= book.price
-                    li.t-row.book__image.image-wrapper
-                        if (book.images != [])
-                            img(src=`${book.images[0].url}`)
-                    li.t-row.book__quantity.text-center= book.quantity
-                    li.t-row.book__discoun.text-center= book.discount
-                    li.t-row.book__category.text-center= formatAttributes(book.categories)
-                    li.t-row.updated_at= book.updatedAt
-                    li.t-row.absolute.t-row-action.action.bottom-0
-                            div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
-                                a(href=`books/edit/${book.id}`  class="action-path")
-                                    img(src="./images/edit.png" alt="")
-                                button(href-button=`books/delete/${book.id}` class="action-path delete-btn")
-                                    img(src="./images/delete.png" alt="")
+                div.relative
+                    a.decoration-none.t-row-wrapper.ml-8.flex.justify-between.text-lg.items-center(href=`books/show/${book.id}` class="hover:bg-slate-100 transition-colors")
+                        div.t-row.book__id.text-center= book.id
+                        div.t-row.book__title.text-center= book.title
+                        div.t-row.book__description= book.description
+                        div.t-row.book__price.text-center= book.price
+                        div.t-row.book__image.image-wrapper
+                            if (book.images != [])
+                                img(src=`${book.images[0].url}`)
+                        div.t-row.book__quantity.text-center= book.quantity
+                        div.t-row.book__discoun.text-center= book.discount
+                        div.t-row.book__category.text-center= formatAttributes(book.categories)
+                        div.t-row.updated_at= book.updatedAt
+                    div.absolute.action.bottom-0
+                        div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
+                            button(href-button=`books/delete/${book.id}` class="action-path delete-btn z-50")
+                                img(src="./images/delete.png" alt="")
             include ../partials/_paging
             include ../partials/_modal
         else

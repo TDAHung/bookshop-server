@@ -4,8 +4,8 @@ import { AdminOrderService } from './order.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
-@UseGuards(AuthenticatedGuard)
-@UseFilters(AuthExceptionFilter)
+// @UseGuards(AuthenticatedGuard)
+// @UseFilters(AuthExceptionFilter)
 @Controller("orders")
 export class AdminOrderController {
     constructor(private readonly adminOrderSerivice: AdminOrderService) { }
@@ -15,7 +15,9 @@ export class AdminOrderController {
     async index(
         @Query('page') page?: string,
         @Query('limit') limit?: string,
+        @Query('search') searchParams?: string,
     ) {
+        const search: string | undefined = searchParams || '';
         const take: number | undefined = limit ? Number(limit) : ItemsPerPage.orders;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const orders = await this.adminOrderSerivice.orders({
@@ -29,14 +31,34 @@ export class AdminOrderController {
                     }
                 }
             },
+            where: {
+                OR: [
+                    {
+                        address: {
+                            contains: search
+                        }
+                    }
+                ]
+            },
             orderBy: {
                 updatedAt: 'asc',
             },
         });
-        const total = await this.adminOrderSerivice.total();
+        const total = await this.adminOrderSerivice.total({
+            where: {
+                OR: [
+                    {
+                        address: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        });
 
         return {
             path: 'orders',
+            method: 'index',
             orders,
             paging: {
                 total,
@@ -72,6 +94,7 @@ export class AdminOrderController {
 
         return {
             path: 'orders',
+            method: 'edit',
             order,
         };
     }

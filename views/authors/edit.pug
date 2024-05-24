@@ -5,7 +5,7 @@ block content
         .cursor-pointer.h-80.w-80.bg-slate-100.flex.justify-center.items-center.rounded-2xl.image-render
             img(src="").h-80.w-80
             i.fa-solid.fa-trash.absolute.text-3xl.detele-icon
-    form.create-book-form(action="new" method="post" enctype="multipart/form-data")
+    form.create-book-form(action=`/authors/update/${author.id}` method="post" enctype="multipart/form-data")
         .space-y-12
             .border-b.pb-12(class='border-gray-900/10')
                 h2.font-semibold.leading-7.text-gray-900.text-4xl Author
@@ -14,24 +14,24 @@ block content
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') First Name
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='firstName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                            input#firstName.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${author.firstName}` name='firstName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
                 div(class='sm:col-span-4')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') Last Name
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='lastName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                            input#lastName.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${author.lastName}` name='lastName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
                 div(class='sm:col-span-4')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') Link Bio
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='bio' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                            input#bio.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${author.bio}` name='bio' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
                 .col-span-full
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='images') Images
                     .mt-2.grid.grid-cols-4.gap-4.imgGroup
                     label(for='images').cursor-pointer.h-80.w-80.bg-slate-100.flex.justify-center.items-center.rounded-2xl.mt-8#image-input
                         i.fa-solid.fa-camera.text-3xl.text-slate-500
                     input(type="file" class="form-control hidden" id="images" accept="image/gif, image/jpeg, image/png, image/jpg, image/webp" name="thumpnail")
-
+                    input(type="hidden" value=`${author.thumpnail.url}` id=`${author.thumpnail.key}` class="files-edit" file_name=`${author.name}`)
         .mt-6.flex.items-center.justify-end.gap-x-6
             button.text-2xl.font-semibold.leading-6.text-gray-900(type='button') Cancel
             button.rounded-md.bg-indigo-600.px-3.py-2.text-2xl.font-semibold.text-white.shadow-sm(type='submit' class='hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600') Save

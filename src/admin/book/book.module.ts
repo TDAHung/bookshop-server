@@ -6,6 +6,7 @@ import { AdminCategoryService } from '../category/category.service';
 import { AdminBookCategoryService } from '../book_category/book_category.service';
 import { AwsService } from '../aws/aws.service';
 import { AdminAuthorService } from '../author/author.service';
+import { AdminReviewService } from '../reviews/review.service';
 
 @Module({
   providers: [
@@ -14,6 +15,7 @@ import { AdminAuthorService } from '../author/author.service';
     AdminCategoryService,
     AdminBookCategoryService,
     AdminAuthorService,
+    AdminReviewService,
     AwsService],
   controllers: [AdminBookController]
 })

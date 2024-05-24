@@ -46,9 +46,16 @@ export class AdminReviewService {
         return reviews;
     }
 
-    total = async (): Promise<number> => {
+    total = async (
+        params: {
+            where?: Prisma.ReviewWhereInput
+        }
+    ): Promise<number> => {
         try {
-            return await this.prismaService.review.count();
+            const { where } = params;
+            return await this.prismaService.review.count({
+                where
+            });
         } catch (error) {
             throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
         }

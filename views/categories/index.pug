@@ -11,12 +11,18 @@ block content
                 li.t-head Last updated at
             div.line
             each category in categories
-                a.t-row-wrapper.ml-8.flex.justify-between.text-lg(href=`/category/edit/${category.id}` class="hover:bg-slate-100 transition-colors")
-                    div.t-row.category__id= category.id
-                    div.t-row.category__name= category.name
-                    div.t-row.category__description= category.description
-                    div.t-row.updated_at= category.updatedAt
+                .relative
+                    a.t-row-wrapper.ml-8.flex.justify-between.items-center.text-lg(href=`/categories/edit/${category.id}` class="hover:bg-slate-100 transition-colors")
+                        div.t-row.category__id= category.id
+                        div.t-row.category__name= category.name
+                        div.t-row.category__description= category.description
+                        div.t-row.updated_at= category.updatedAt
+                    div.absolute.action.bottom-0
+                            div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
+                                button(href-button=`/categories/delete/${category.id}` class="action-path delete-btn z-50")
+                                    img(src="./images/delete.png" alt="")
             include ../partials/_paging
+            include ../partials/_modal
         else
             div.w-full.flex.justify-center.h-full.items-center
                 div.empty-data.text-center

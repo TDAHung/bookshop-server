@@ -2,12 +2,16 @@ extends ../layouts/admin
 
 block content
 
+    template#render-image
+        .cursor-pointer.h-80.w-80.bg-slate-100.flex.justify-center.items-center.rounded-2xl.image-render
+            img(src="").h-80.w-80
+            i.fa-solid.fa-trash.absolute.text-3xl.detele-icon
     form.create-book-form(action="new" method="post" enctype="multipart/form-data")
         .space-y-12
             .border-b.pb-12(class='border-gray-900/10')
                 h2.font-semibold.leading-7.text-gray-900.text-4xl Book
             .mt-10.grid.grid-cols-1.gap-x-6.gap-y-8(class='sm:grid-cols-6')
-                div(class='sm:col-span-4')
+                .col-span-2
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='username') Title
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
@@ -19,15 +23,17 @@ block content
                     label.block.text-2xl.font-medium.leading-6.text-gray-900.mt-4(for='username') Quantity
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#price.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='number' name='quantity' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0')
-                .col-span-full
+                            input#quantity.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='number' name='quantity' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0')
+                .col-span-4
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='about') Description
                     .mt-2
                         textarea#about.block.w-full.text-xl.rounded-md.border-0.text-gray-900.shadow-sm.ring-1.ring-inset.ring-gray-300(name='description' rows='3' class='py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600')
                 .col-span-full
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='images') Images
-                    .mt-2
-                        input(type="file" class="form-control" id="images" multiple="multiple" accept="image/gif, image/jpeg, image/png, image/jpg, image/webp" name="images")
+                    .mt-2.grid.grid-cols-4.gap-4.imgGroup
+                    label(for='images').cursor-pointer.h-80.w-80.bg-slate-100.flex.justify-center.items-center.rounded-2xl.mt-8#image-input
+                        i.fa-solid.fa-camera.text-3xl.text-slate-500
+                    input(type="file" class="form-control hidden" id="images" multiple="multiple" accept="image/gif, image/jpeg, image/png, image/jpg, image/webp" name="images")
         .border-b.mt-4.pb-12(class='border-gray-900/10')
             h2.text-2xl.font-semibold.leading-7.text-gray-900 Categories
             .space-y-10
@@ -36,7 +42,7 @@ block content
                         each category in categories
                             .relative.flex.gap-x-3
                                 .flex.h-6.items-center
-                                    input#comments.h-4.w-4.rounded.border-gray-300.text-indigo-600(name='categories' type='checkbox' class='focus:ring-indigo-600' value=category.id)
+                                    input.h-4.w-4.rounded.border-gray-300.text-indigo-600(name='categories' type='checkbox' class='focus:ring-indigo-600' value=category.id)
                                 .text-sm.leading-6
                                     label.font-medium.text-gray-900.text-xl(for='categories') #{category.name}
                                     p.text-gray-500.text-lg #{category.description}
@@ -47,7 +53,7 @@ block content
                         each author in authors
                             .relative.flex.gap-x-3
                                 .flex.h-6.items-center
-                                    input#comments.h-4.w-4.rounded.border-gray-300.text-indigo-600(name='authors' type='checkbox' class='focus:ring-indigo-600' value=author.id)
+                                    input.h-4.w-4.rounded.border-gray-300.text-indigo-600(name='authors' type='checkbox' class='focus:ring-indigo-600' value=author.id)
                                 .text-sm.leading-6
                                     label.font-medium.text-gray-900.text-xl(for='categories') #{author.firstName} #{author.lastName}
 

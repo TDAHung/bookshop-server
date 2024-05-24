@@ -4,8 +4,8 @@ import { Controller, Get, Query, Render, UseFilters, UseGuards } from '@nestjs/c
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
 
-@UseGuards(AuthenticatedGuard)
-@UseFilters(AuthExceptionFilter)
+// @UseGuards(AuthenticatedGuard)
+// @UseFilters(AuthExceptionFilter)
 @Controller("reviews")
 export class AdminReviewController {
 
@@ -15,7 +15,9 @@ export class AdminReviewController {
     async index(
         @Query('page') page?: string,
         @Query('limit') limit?: string,
+        @Query('search') searchParams?: string,
     ) {
+        const search: string | undefined = searchParams || "";
         const take: number | undefined = limit ? Number(limit) : ItemsPerPage.reviews;
         const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
         const reviews = await this.adminReviewService.reviews({
@@ -25,14 +27,48 @@ export class AdminReviewController {
                 user: true,
                 book: true,
             },
+            where: {
+                OR: [
+                    {
+                        book: {
+                            title: {
+                                contains: search
+                            }
+                        }
+                    },
+                    {
+                        comment: {
+                            contains: search
+                        }
+                    }
+                ]
+            },
             orderBy: {
                 bookId: 'desc'
             }
         });
 
-        const total = await this.adminReviewService.total();
+        const total = await this.adminReviewService.total({
+            where: {
+                OR: [
+                    {
+                        book: {
+                            title: {
+                                contains: search
+                            }
+                        }
+                    },
+                    {
+                        comment: {
+                            contains: search
+                        }
+                    }
+                ]
+            }
+        });
         return {
             path: 'reviews',
+            method: 'index',
             reviews,
             paging: {
                 total,

@@ -14,21 +14,20 @@ block content
                 li.t-head.author__updatedAt Last updated
             div.line
             each author in authors
-                ul.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center
-                    li.t-row.author__id.text-center= author.id
-                    li.t-row.author__firstName.text-center= author.firstName
-                    li.t-row.author__lastName.text-center= author.lastName
-                    li.t-row.author__bio.text-center.underline.text-blue-500
-                        a(href=`${author.bio}` target="_blank")= author.bio
-                    li.t-head.author__thumpnail.image-wrapper
-                        img(src=`${author.thumpnail.url}` alt=`${author.thumpnail.name}`)
-                    li.t-row.updated_at.text-center= author.updatedAt
-                    li.t-row.absolute.t-row-action.action.bottom-0
-                            div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
-                                a(href=`authors/edit/${author.id}`  class="action-path")
-                                    img(src="./images/edit.png" alt="")
-                                button(href-button=`authors/delete/${author.id}` class="action-path delete-btn")
-                                    img(src="./images/delete.png" alt="")
+                .relative
+                    a.t-row-wrapper.ml-8.flex.justify-between.text-lg.relative.items-center(href=`authors/edit/${author.id}` class="hover:bg-slate-100 transition-colors")
+                        div.t-row.author__id.text-center= author.id
+                        div.t-row.author__firstName.text-center= author.firstName
+                        div.t-row.author__lastName.text-center= author.lastName
+                        div.t-row.author__bio.text-center.underline.text-blue-500
+                            div(href=`${author.bio}` target="_blank")= author.bio
+                        div.t-row.author__thumpnail.image-wrapper
+                            img(src=`${author.thumpnail.url}` alt=`${author.thumpnail.name}`)
+                        div.t-row.updated_at.text-center= author.updatedAt
+                    .absolute.action.bottom-0
+                        .absolute.w-20(class="right-1/4").flex.justify-between.items-center
+                            button(href-button=`authors/delete/${author.id}` class="action-path delete-btn")
+                                img(src="./images/delete.png" alt="")
 
             include ../partials/_paging
             include ../partials/_modal
