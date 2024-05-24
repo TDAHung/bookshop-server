@@ -19,6 +19,5 @@ window.onclick = function (event) {
     if (event.target == modal) {
         modal.classList.remove('active');
         link.href = "";
-
     }
 }

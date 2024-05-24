@@ -1,0 +1,39 @@
+.book__category {
+    width: 40rem;
+}
+
+.author__wrapper {
+    width: 5.5rem;
+    height: 5.5rem;
+}
+
+.review__commentor {
+    width: 10rem;
+}
+
+.t-head-wrapper,
+.t-row-wrapper {
+    width: 100%;
+    padding: 1rem 8rem 1rem 2rem;
+}
+
+.review__id {
+    width: 2rem;
+}
+
+.review__rating {
+    width: 7rem;
+}
+
+
+.t-row.review__rating {
+    color: #facc15;
+}
+
+.review__comment {
+    width: 50rem;
+}
+
+.book__images img {
+    height: 10rem;
+}

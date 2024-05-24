@@ -15,6 +15,10 @@
     width: 5rem;
 }
 
+.book__description {
+    width: 20rem;
+}
+
 .book__images {
     width: 3rem;
 }
@@ -29,17 +33,6 @@
 
 .action {
     transform: translateY(15%);
-}
-
-#image-input,
-.image-render {
-    transition: all ease-in-out 300ms;
-}
-
-#image-input:hover,
-.image-render:hover {
-    opacity: 0.5;
-    filter: alpha(opacity=50);
 }
 
 .detele-icon {

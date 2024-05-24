@@ -27,9 +27,11 @@
 }
 
 .review__comment {
-    width: 10rem;
+    width: 20rem;
 }
 
 .book__title {}
 
-.book__images {}
+.book__images img {
+    height: 10rem;
+}

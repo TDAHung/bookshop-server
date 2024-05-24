@@ -10,9 +10,11 @@ btns.forEach(btn => {
     })
 })
 
-cancel.onclick = function () {
-    modal.classList.remove('active');
-    link.href = "";
+if (cancel) {
+    cancel.onclick = function () {
+        modal.classList.remove('active');
+        link.href = "";
+    }
 }
 
 window.onclick = function (event) {
@@ -21,3 +23,4 @@ window.onclick = function (event) {
         link.href = "";
     }
 }
+
