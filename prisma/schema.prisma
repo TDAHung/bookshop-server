@@ -32,6 +32,8 @@ model Category {
   id          Int            @id @default(autoincrement())
   name        String         @unique
   description String?
+  banner      String?
+  bannerColor String?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @default(now())
   books       BookCategory[]

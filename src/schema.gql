@@ -97,6 +97,12 @@ type Cart {
 }
 
 type CategoryEntity {
+  """Description of Category"""
+  banner: String!
+
+  """Description of Category"""
+  bannerColor: String!
+
   """Name of Category"""
   books: [BookCategoryEntity!]!
 
@@ -230,7 +236,7 @@ type Query {
   book(id: Int!): BookEntity!
   books(limit: Float, order: String, page: Float, search: String, sortBy: String): [BookEntity!]!
   cart(id: Int!): Cart!
-  categories(limit: Float, order: String, page: Float, search: String, sortBy: String): [CategoryEntity!]!
+  categories(order: String, search: String, sortBy: String): [CategoryEntity!]!
   category(id: Int!): CategoryEntity!
   getMostPopularBooks(limit: Float, page: Float): [MostPopularBookEntity!]!
   order(id: Int!): OrderEntity!

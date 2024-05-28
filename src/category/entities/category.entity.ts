@@ -14,4 +14,10 @@ export class CategoryEntity {
 
   @Field(() => [BookCategoryEntity], { description: "Name of Category" })
   books: BookCategoryEntity[];
+
+  @Field({ description: "Description of Category" })
+  banner: string;
+
+  @Field({ description: "Description of Category" })
+  bannerColor: string;
 }

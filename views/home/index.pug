@@ -23,10 +23,11 @@ block content
                     .shop__rating__detail.text-2xl.font-black= avgReviewStars
         .rounded-3xl.bg-white.text-center.py-4
             .card__header.font-black.text-2xl Customer Most Revenue
-            .user.mt-12.text-2xl.flex.flex-col.items-center
-                .user__name= "Full Name: " + userWithMostTotalOrder.full_name
-                .user__total__revenue= "Total: " + userWithMostTotalOrder.max_total + " USD"
-                .user__total__orders.completed.mt-4= userWithMostTotalOrder.total_orders + " Orders Completed"
+            if (userWithMostTotalOrder)
+                .user.mt-12.text-2xl.flex.flex-col.items-center
+                    .user__name= "Full Name: " + userWithMostTotalOrder.full_name
+                    .user__total__revenue= "Total: " + userWithMostTotalOrder.max_total + " USD"
+                    .user__total__orders.completed.mt-4= userWithMostTotalOrder.total_orders + " Orders Completed"
         .card__chartline.col-span-4.bg-white.rounded-3xl.p-8
             .card__header.font-black.text-2xl.font-black.ms-20 Chart Last 12 Months Revenue
             canvas#myChart

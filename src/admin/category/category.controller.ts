@@ -72,6 +72,7 @@ export class AdminCategoryController {
         });
     }
 
+    
     @Get("create")
     @Render('categories/create')
     async create(
