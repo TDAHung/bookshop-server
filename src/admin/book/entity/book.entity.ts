@@ -1,5 +1,4 @@
 import { JsonObject, JsonValue } from "@prisma/client/runtime/library";
-import { AuthorEntity } from "src/admin/author/entity/author.entity";
 
 export interface ImageJson {
     url: string,

@@ -1,14 +1,14 @@
 import { AdminUserSerivce } from './../users/user.service';
-import { Body, Controller, Get, Param, Post, Render, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Render, Session, UseFilters, UseGuards } from '@nestjs/common';
 import { AdminOrderService } from '../order/order.service';
 import { AdminBookService } from '../book/book.service';
 import { AdminReviewService } from '../reviews/review.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { CustomExceptionFilter } from '../filter/custom-exception.filter';
 
 @Controller()
 @UseGuards(AuthenticatedGuard)
-@UseFilters(AuthExceptionFilter)
+@UseFilters(CustomExceptionFilter)
 export class AdminHomeController {
     constructor(
         private readonly adminOrderSerivce: AdminOrderService,
@@ -16,10 +16,22 @@ export class AdminHomeController {
         private readonly adminReviewService: AdminReviewService,
         private readonly adminUserSerivce: AdminUserSerivce,
     ) { }
-
+    private readonly PATH = 'homes';
+    private render(
+        method: string,
+        options: any = {}
+    ) {
+        return {
+            path: this.PATH,
+            method,
+            ...options
+        };
+    }
     @Get()
     @Render('home/index')
-    async index() {
+    async index(
+        @Session() session: any
+    ) {
         const totalPrice = await this.adminOrderSerivce.totalPrice(12);
         const mostPopularBook = await this.adminBookService.getMostPopularBook();
         const totalPriceLast6Months: any = await this.adminOrderSerivce.totalPrice(6);
@@ -40,14 +52,14 @@ export class AdminHomeController {
 
         const userWithMostTotalOrder = await this.adminUserSerivce.getUserWithMostOrderCompleted(1);
         const avgReviewStars = await this.adminReviewService.avgStar();
-        return {
-            path: 'homes',
+        return this.render('index', {
             totalPrice,
             mostPopularBook,
             total6months,
             orders,
             userWithMostTotalOrder: userWithMostTotalOrder[0],
-            avgReviewStars: avgReviewStars
-        }
+            avgReviewStars: avgReviewStars,
+            user: session.passport.user
+        })
     }
 }

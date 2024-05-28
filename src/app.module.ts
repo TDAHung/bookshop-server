@@ -11,6 +11,13 @@ import { BookModule } from './book/book.module';
 import { AdminHomeModule } from './admin/home/home.module';
 import { AdminReviewModule } from './admin/reviews/review.module';
 import { AdminAuthorModule } from './admin/author/author.module';
+import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './category/category.module';
+import { AuthorModule } from './author/author.module';
+import { ReviewModule } from './review/review.module';
+import { OrderModule } from './order/order.module';
+import { CartModule } from './cart/cart.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -27,7 +34,14 @@ import { AdminAuthorModule } from './admin/author/author.module';
     AdminAuthModule,
     AdminReviewModule,
     AdminCategoryModule,
-    BookModule
+    BookModule,
+    AuthModule,
+    CategoryModule,
+    AuthorModule,
+    ReviewModule,
+    OrderModule,
+    CartModule,
+    UserModule
   ]
 })
 export class AppModule { }

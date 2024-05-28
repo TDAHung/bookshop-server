@@ -66,7 +66,7 @@ export class AdminCategoryService {
             });
             return category;
         } catch (error) {
-            throw new HttpException({ message: error.message }, HttpStatus.NOT_ACCEPTABLE);
+            throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST);
         }
     }
 

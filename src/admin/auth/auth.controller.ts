@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Render, Req, Res, UnauthorizedException, UseFilters, UseGuards } from '@nestjs/common';
 import { AdminAuthService } from './auth.service';
 import { LoginGuard } from './guards/login.guard';
-import { AuthExceptionFilter } from './filter/auth-exception.filter';
-import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { CustomExceptionFilter } from '../filter/custom-exception.filter';
 
 @Controller()
-@UseFilters(AuthExceptionFilter)
+@UseFilters(CustomExceptionFilter)
 export class AdminAuthController {
     constructor() { }
 

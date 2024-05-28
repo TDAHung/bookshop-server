@@ -2,28 +2,310 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Book {
+type AuthorBookEntity {
+  """Authors of Book"""
+  author: AuthorEntity!
+
+  """Books of Author"""
+  book: BookEntity!
+
+  """ID of Relation"""
+  id: Float!
+}
+
+type AuthorEntity {
+  """Bio of Author"""
+  bio: String!
+
+  """Books of Author"""
+  books: [AuthorBookEntity!]!
+
+  """Created At of Author"""
+  createdAt: DateTime!
+
+  """First Name of Author"""
+  firstName: String!
+
+  """ID of Author"""
+  id: Float!
+
+  """Last Name of Author"""
+  lastName: String!
+
+  """Thumpnail of Author"""
+  thumpnail: ImageJson!
+
+  """Updated At of Author"""
+  updatedAt: DateTime!
+}
+
+type BookCategoryEntity {
+  """Books of Author"""
+  book: BookEntity!
+
+  """Authors of Book"""
+  category: CategoryEntity!
+
+  """ID of Relation"""
+  id: Float!
+}
+
+type BookEntity {
+  """Authors of Book"""
+  authors: [AuthorBookEntity!]!
+
+  """Review of Book"""
+  avgRating: Float!
+
+  """Categories of Book"""
+  categories: [BookCategoryEntity!]!
+
+  """Title of Book"""
+  createdAt: DateTime!
+
+  """Description of Book"""
+  description: String!
+
+  """Discount of Book"""
+  discount: Float!
+
+  """Id of Book"""
+  id: Float!
+
+  """Images of Book"""
+  images: [ImageJson!]!
+
+  """Price of Book"""
+  price: Float!
+
+  """Quantity of Book"""
+  quantity: Float!
+
+  """All Reviews of this Book"""
+  reviews: [ReviewEntity!]!
+
+  """Title of Book"""
+  title: String!
+
+  """Title of Book"""
+  updatedAt: DateTime!
+}
+
+type Cart {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
-input CreateBookInput {
+type CategoryEntity {
+  """Name of Category"""
+  books: [BookCategoryEntity!]!
+
+  """Description of Category"""
+  description: String!
+
+  """ID of Category"""
+  id: Int!
+
+  """Name of Category"""
+  name: String!
+}
+
+input CreateCartInput {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+input CreateOrderInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateReviewInput {
+  """Book ID"""
+  bookId: Float!
+
+  """rating of Review"""
+  comment: String!
+
+  """rating of Review"""
+  rating: Float!
+
+  """User Id"""
+  userId: Float
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ImageJson {
+  """Key of the image"""
+  key: String!
+
+  """Name of the image"""
+  name: String!
+
+  """Size of the image"""
+  size: Float!
+
+  """URL of the image"""
+  url: String!
+}
+
+type MostPopularBookEntity {
+  """Description of Book"""
+  description: String!
+
+  """Id of Book"""
+  id: Float!
+
+  """Images of Book"""
+  images: [ImageJson!]!
+
+  """Images of Book"""
+  rating: Float!
+
+  """Title of Book"""
+  title: String!
 }
 
 type Mutation {
-  createBook(createBookInput: CreateBookInput!): Book!
-  removeBook(id: Int!): Book!
-  updateBook(updateBookInput: UpdateBookInput!): Book!
+  createCart(createCartInput: CreateCartInput!): Cart!
+  createOrder(createOrderInput: CreateOrderInput!): OrderEntity!
+  createReview(createReviewInput: CreateReviewInput!): ReviewEntity!
+  createUser(createUserInput: CreateUserInput!): UserEntity!
+  removeCart(id: Int!): Cart!
+  removeReview(id: Int!): ReviewEntity!
+  removeUser(id: Int!): UserEntity!
+  signIn(signInInput: SignInInput!): SignResponse!
+  signUp(signUpInput: SignUpInput!): SignResponse!
+  updateBook(updateBookInput: UpdateBookInput!): BookEntity!
+  updateCart(updateCartInput: UpdateCartInput!): Cart!
+  updateUser(updateUserInput: UpdateUserInput!): UserEntity!
+}
+
+type OrderEntity {
+  """Address of Order"""
+  address: String!
+
+  """ID of Order"""
+  id: Int!
+
+  """Items of Order"""
+  orderItems: [OrderItemEntity!]!
+
+  """Status of Order"""
+  status: String!
+
+  """Address of Order"""
+  user: UserEntity
+}
+
+type OrderItemEntity {
+  """Book ID"""
+  bookId: Int!
+
+  """ID of Item"""
+  id: Int!
+
+  """Order ID"""
+  orderId: Int!
+
+  """Price of the Items"""
+  price: Int!
+
+  """Quantity of Item"""
+  quantity: Int!
 }
 
 type Query {
-  book(id: Int!): Book!
+  author(id: Int!): AuthorEntity!
+  authors(limit: Float, order: String, page: Float, search: String, sortBy: String): [AuthorEntity!]!
+  book(id: Int!): BookEntity!
+  books(limit: Float, order: String, page: Float, search: String, sortBy: String): [BookEntity!]!
+  cart(id: Int!): Cart!
+  categories(limit: Float, order: String, page: Float, search: String, sortBy: String): [CategoryEntity!]!
+  category(id: Int!): CategoryEntity!
+  getMostPopularBooks(limit: Float, page: Float): [MostPopularBookEntity!]!
+  order(id: Int!): OrderEntity!
+  orders(userID: Int): [OrderEntity!]!
+  reviews(bookId: Int!): [ReviewEntity!]!
+  totalAuthors(search: String): Float!
+  totalBooks(search: String): Float!
+  user(id: Int!): UserEntity!
+}
+
+type ReviewEntity {
+  """Book of Review"""
+  book: BookEntity!
+
+  """Comment of Review"""
+  comment: String!
+
+  """Created At of Review"""
+  createdAt: DateTime!
+
+  """Id of Review"""
+  id: Float!
+
+  """Rating of Review"""
+  rating: Float!
+
+  """Updated At of Review"""
+  updatedAt: DateTime!
+
+  """User comments"""
+  user: UserEntity
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+type SignResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: UserEntity!
+}
+
+input SignUpInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String!
 }
 
 input UpdateBookInput {
+  id: Int!
+
+  """Update Quantity of Book"""
+  quantity: Float!
+}
+
+input UpdateCartInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+type UserEntity {
+  email: String!
+  firstName: String!
+  id: Int!
+  lastName: String!
+  username: String!
 }

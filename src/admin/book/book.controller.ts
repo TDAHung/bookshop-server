@@ -1,5 +1,5 @@
 import { AdminBookCategoryService } from './../book_category/book_category.service';
-import { Body, Controller, Get, Param, Patch, Post, Query, Render, Res, UploadedFile, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, Render, Res, Session, UploadedFile, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AdminBookService } from './book.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminCategoryService } from '../category/category.service';
@@ -7,11 +7,11 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { AwsService } from '../aws/aws.service';
 import { AdminAuthorService } from '../author/author.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { CustomExceptionFilter } from '../filter/custom-exception.filter';
 import { AdminReviewService } from '../reviews/review.service';
 
-// @UseGuards(AuthenticatedGuard)
-// @UseFilters(AuthExceptionFilter)
+@UseGuards(AuthenticatedGuard)
+@UseFilters(CustomExceptionFilter)
 @Controller('books')
 export class AdminBookController {
 
@@ -22,10 +22,21 @@ export class AdminBookController {
         private readonly adminAuthorService: AdminAuthorService,
         private readonly awsService: AwsService
     ) { }
-
+    private readonly PATH = 'books';
+    private render(
+        method: string,
+        options: any = {}
+    ) {
+        return {
+            path: this.PATH,
+            method,
+            ...options
+        };
+    }
     @Get()
     @Render('books/index')
     async index(
+        @Session() session: any,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
         @Query('search') searchParams?: string
@@ -72,21 +83,22 @@ export class AdminBookController {
                 ]
             }
         });
-        return {
-            path: 'books',
-            method: "index",
+        return this.render('index', {
             books,
             paging: {
                 total,
                 page: Number(page),
                 totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
-            }
-        }
+            },
+            user: session.passport.user
+        })
     }
 
     @Get("create")
     @Render('books/create')
-    async create() {
+    async create(
+        @Session() session: any
+    ) {
         const categories = await this.adminCategoryService.categories({
             orderBy: {
                 name: 'desc'
@@ -97,12 +109,11 @@ export class AdminBookController {
                 firstName: 'desc'
             }
         });
-        return {
-            path: 'books',
-            method: "create",
+        return this.render('create', {
             categories,
-            authors
-        }
+            authors,
+            user: session.passport.user
+        })
     }
 
     @Post("new")
@@ -172,6 +183,7 @@ export class AdminBookController {
     @Get("show/:id")
     @Render('books/show')
     async show(
+        @Session() session: any,
         @Param('id') id: string
     ) {
         try {
@@ -213,13 +225,10 @@ export class AdminBookController {
                     }
                 }
             });
-
-            console.log(book);
-            return {
-                path: "books",
-                method: "show",
+            return this.render('show', {
                 book,
-            }
+                user: session.passport.user
+            })
         } catch (error) {
             throw error;
         }
@@ -227,7 +236,10 @@ export class AdminBookController {
 
     @Get("edit/:id")
     @Render('books/edit')
-    async edit(@Param('id') id: string) {
+    async edit(
+        @Session() session: any,
+        @Param('id') id: string
+    ) {
         const book = await this.adminBookService.book({
             id: Number(id)
         }, {
@@ -240,11 +252,11 @@ export class AdminBookController {
             }
         });
 
-        return {
-            path: 'books',
+        return this.render('edit', {
             book,
             categories,
-        }
+            user: session.passport.user
+        })
     }
 
     @Post("update/:id")

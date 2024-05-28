@@ -13,18 +13,36 @@ block content
                 div(class='sm:col-span-4')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') First Name
                     .mt-2
-                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='firstName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class=`focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ${message && message.firstName ? 'border-red-400 border-2 rounded-md' : ''}`)
+                            input#firstName.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${acceptData ? acceptData.firstName: ''}` name='firstName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        if (message && message.firstName)
+                            .text-red-400.text-lg
+                                each error in message.firstName
+                                    div
+                                        i.fa-solid.fa-triangle-exclamation
+                                        = "This field " + error
                 div(class='sm:col-span-4')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') Last Name
                     .mt-2
-                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='lastName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class=`focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ${message && message.lastName ? 'border-red-400 border-2 rounded-md' : ''}`)
+                            input#lastName.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${acceptData ? acceptData.lastName: ''}` name='lastName' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        if (message && message.lastName)
+                            .text-red-400.text-lg
+                                each error in message.lastName
+                                    div
+                                        i.fa-solid.fa-triangle-exclamation
+                                        = "This field " + error
                 div(class='sm:col-span-4')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='name') Link Bio
                     .mt-2
-                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#name.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='bio' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class=`focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ${message && message.bio ? 'border-red-400 border-2 rounded-md' : ''}`)
+                            input#bio.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' value=`${acceptData ? acceptData.bio: ''}` name='bio' autocomplete='title' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='janesmith')
+                        if (message && message.bio)
+                            .text-red-400.text-lg
+                                each error in message.bio
+                                    div
+                                        i.fa-solid.fa-triangle-exclamation
+                                        = "This field " + error
                 .col-span-full
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='images') Images
                     .mt-2.grid.grid-cols-4.gap-4.imgGroup

@@ -6,7 +6,7 @@
             button(type="submit").me-12.ms-8
                 i.fa-solid.fa-magnifying-glass
             input.search.h-full(class="w-4/5" type="text" name="search" placeholder="Search Here")
-            input.search.h-full(type="number" name="limit" placeholder="Limit per page")
-    a.clear-filter.text-2xl(href=`${path}`) Clear Filter
+            input.search.h-full.bg-transparent(type="number" name="limit" placeholder="Limit per page")
+    a.clear-filter.text-2xl.bg-red-100(href=`${path}`) Clear Filter
     if (path == 'books' || path == 'authors' || path == 'categories')
         a.create.text-2xl.float-right(href=`${path}/create`)= "Add " + transformedPath

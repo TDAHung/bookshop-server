@@ -1,18 +1,29 @@
-import { Body, Controller, Get, Param, Post, Query, Render, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render, Res, Session, UseFilters, UseGuards } from '@nestjs/common';
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminOrderService } from './order.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { CustomExceptionFilter } from '../filter/custom-exception.filter';
 
-// @UseGuards(AuthenticatedGuard)
-// @UseFilters(AuthExceptionFilter)
+@UseGuards(AuthenticatedGuard)
+@UseFilters(CustomExceptionFilter)
 @Controller("orders")
 export class AdminOrderController {
     constructor(private readonly adminOrderSerivice: AdminOrderService) { }
-
+    private readonly PATH = 'orders';
+    private render(
+        method: string,
+        options: any = {}
+    ) {
+        return {
+            path: this.PATH,
+            method,
+            ...options
+        };
+    }
     @Get()
     @Render('orders/index')
     async index(
+        @Session() session: any,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
         @Query('search') searchParams?: string,
@@ -56,22 +67,24 @@ export class AdminOrderController {
             }
         });
 
-        return {
-            path: 'orders',
-            method: 'index',
+        return this.render('index', {
             orders,
             paging: {
                 total,
                 page: Number(page),
                 limit,
                 totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
-            }
-        };
+            },
+            user: session.passport.user
+        });
     }
 
     @Get('edit/:id')
     @Render('orders/edit')
-    async edit(@Param('id') id: string) {
+    async edit(
+        @Session() session: any,
+        @Param('id') id: string
+    ) {
         const order = await this.adminOrderSerivice.order(
             {
                 id: Number(id),
@@ -92,11 +105,10 @@ export class AdminOrderController {
             },
         );
 
-        return {
-            path: 'orders',
-            method: 'edit',
+        return this.render('edit', {
             order,
-        };
+            user: session.passport.user
+        });
     }
 
 

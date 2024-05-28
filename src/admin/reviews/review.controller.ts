@@ -1,11 +1,11 @@
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AdminReviewService } from './review.service';
-import { Controller, Get, Query, Render, UseFilters, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Render, Session, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { AuthExceptionFilter } from '../auth/filter/auth-exception.filter';
+import { CustomExceptionFilter } from '../filter/custom-exception.filter';
 
-// @UseGuards(AuthenticatedGuard)
-// @UseFilters(AuthExceptionFilter)
+@UseGuards(AuthenticatedGuard)
+@UseFilters(CustomExceptionFilter)
 @Controller("reviews")
 export class AdminReviewController {
 
@@ -13,6 +13,7 @@ export class AdminReviewController {
     @Get()
     @Render('reviews/index')
     async index(
+        @Session() session: any,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
         @Query('search') searchParams?: string,
@@ -74,7 +75,8 @@ export class AdminReviewController {
                 total,
                 page: Number(page),
                 totalPages: total % take != 0 ? Math.floor(total / take) + 1 : Math.floor(total / take)
-            }
+            },
+            user: session.passport.user
         }
     }
 }
