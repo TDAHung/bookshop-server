@@ -41,8 +41,8 @@ export class CategoryResolver {
   }
 
   @Query(() => CategoryEntity, { name: 'category' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.categoryService.category(
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    const category = await this.categoryService.category(
       {
         where: {
           id: Number(id)
@@ -56,5 +56,6 @@ export class CategoryResolver {
         }
       }
     );
+    return category
   }
 }

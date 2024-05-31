@@ -34,7 +34,7 @@ export class BookService {
       include?: Prisma.BookInclude,
       cursor?: Prisma.BookWhereUniqueInput,
       where?: Prisma.BookWhereInput,
-      orderBy?: Prisma.BookOrderByWithRelationInput;
+      orderBy?: Prisma.BookOrderByWithRelationInput[] | Prisma.BookOrderByWithRelationInput;
     }
   ): Promise<BookModel[] | null> => {
     const { skip, take, select, cursor, where, orderBy, include } = params;

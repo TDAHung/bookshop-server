@@ -19,11 +19,15 @@ block content
                     label.block.text-2xl.font-medium.leading-6.text-gray-900.mt-4(for='username') Price
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#price.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='title' name='price' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='USD')
+                            input#price.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='price' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0' placeholder='USD')
                     label.block.text-2xl.font-medium.leading-6.text-gray-900.mt-4(for='username') Quantity
                     .mt-2
                         .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
-                            input#quantity.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='number' name='quantity' autocomplete='username' class='py-1.5 placeholder:text-gray-400 focus:ring-0')
+                            input#quantity.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='number' name='quantity' autocomplete='quantity' class='py-1.5 placeholder:text-gray-400 focus:ring-0')
+                    label.block.text-2xl.font-medium.leading-6.text-gray-900.mt-4(for='username') Discount
+                    .mt-2
+                        .flex.rounded-md.shadow-sm.ring-1.ring-inset.ring-gray-300(class='focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md')
+                            input#discount.block.flex-1.border-0.bg-transparent.pl-1.text-gray-900.text-xl(type='text' name='discount' autocomplete='discount' class='py-1.5 placeholder:text-gray-400 focus:ring-0')
                 .col-span-4
                     label.block.text-2xl.font-medium.leading-6.text-gray-900(for='about') Description
                     .mt-2

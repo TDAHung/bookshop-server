@@ -170,6 +170,8 @@ export class AdminBookController {
                 title: params.title,
                 price: parseFloat(params.price),
                 description: params.description,
+                quantity: parseFloat(params.quantity),
+                discount: parseFloat(params.discount),
                 categories: connectCategories,
                 authors: connectAuthor,
                 images

@@ -11,7 +11,7 @@ export class CategoryService {
       where: Prisma.CategoryWhereUniqueInput,
       include?: Prisma.CategoryInclude,
     }
-  ): Promise<CategoryModel | null> => {
+  ): Promise<any> => {
     try {
       const { where, include } = params;
       const category = await this.prismaService.category.findUniqueOrThrow({

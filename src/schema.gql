@@ -150,6 +150,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input FilterBy {
+  """filter by field"""
+  field: String!
+
+  """Value of the Filter field"""
+  in: [Float!]!
+}
+
 type ImageJson {
   """Key of the image"""
   key: String!
@@ -234,7 +242,7 @@ type Query {
   author(id: Int!): AuthorEntity!
   authors(limit: Float, order: String, page: Float, search: String, sortBy: String): [AuthorEntity!]!
   book(id: Int!): BookEntity!
-  books(limit: Float, order: String, page: Float, search: String, sortBy: String): [BookEntity!]!
+  books(except: String, filter: [FilterBy!], limit: Float, page: Float, search: [SearchBy!], sortBy: [SortBy!]): [BookEntity!]!
   cart(id: Int!): Cart!
   categories(order: String, search: String, sortBy: String): [CategoryEntity!]!
   category(id: Int!): CategoryEntity!
@@ -270,6 +278,14 @@ type ReviewEntity {
   user: UserEntity
 }
 
+input SearchBy {
+  """Value of the Filter field"""
+  contains: String!
+
+  """Search by field"""
+  field: String!
+}
+
 input SignInInput {
   email: String!
   password: String!
@@ -287,6 +303,14 @@ input SignUpInput {
   lastName: String!
   password: String!
   username: String!
+}
+
+input SortBy {
+  """sort by field"""
+  field: String!
+
+  """Order by asc or desc"""
+  order: String!
 }
 
 input UpdateBookInput {
