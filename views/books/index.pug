@@ -29,7 +29,7 @@ block content
                         div.t-row.book__description= book.description
                         div.t-row.book__price.text-center= book.price
                         div.t-row.book__image.image-wrapper
-                            if (book.images != [])
+                            if (book.images.length != 0)
                                 img(src=`${book.images[0].url}`)
                         div.t-row.book__quantity.text-center= book.quantity
                         div.t-row.book__discoun.text-center= book.discount

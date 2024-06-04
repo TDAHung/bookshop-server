@@ -135,7 +135,7 @@ export class AdminBookController {
             let connectAuthor: any = undefined;
             if (categories) {
                 if (!Array.isArray(categories)) {
-                    categories = categories.split('');
+                    categories = [categories];
                 }
                 connectCategories = {
                     create: categories.map((categoryId: string) => {
@@ -152,7 +152,7 @@ export class AdminBookController {
             }
             if (authors) {
                 if (!Array.isArray(authors)) {
-                    authors = authors.split('');
+                    authors = [authors];
                 }
                 connectAuthor = {
                     create: authors.map((authorId: string) => {
@@ -166,6 +166,7 @@ export class AdminBookController {
                     })
                 };
             }
+
             await this.adminBookService.create({
                 title: params.title,
                 price: parseFloat(params.price),

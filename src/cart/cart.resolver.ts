@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Float } from '@nestjs/graphql';
 import { CartService } from './cart.service';
 import { Cart } from './entities/cart.entity';
 import { CreateCartInput } from './dto/create-cart.input';
@@ -6,30 +6,71 @@ import { UpdateCartInput } from './dto/update-cart.input';
 
 @Resolver(() => Cart)
 export class CartResolver {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   @Mutation(() => Cart)
-  createCart(@Args('createCartInput') createCartInput: CreateCartInput) {
-    return this.cartService.create(createCartInput);
+  createCart(@Args('createCart') createCartInput: CreateCartInput) {
+    return this.cartService.create({
+      userId: createCartInput.userId
+    });
   }
 
-  @Query(() => [Cart], { name: 'cart' })
-  findAll() {
-    return this.cartService.findAll();
+  @Query(() => Boolean, { name: 'checkCart' })
+  async checkCart(@Args('id', { nullable: true, type: () => Int }) id: number) {
+    try {
+      const cart = await this.cartService.cart({
+        where: {
+          userId: id
+        }
+      });
+      return cart ? true : false;
+    } catch (error) {
+
+    }
   }
 
   @Query(() => Cart, { name: 'cart' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.cartService.findOne(id);
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    try {
+      const cart = await this.cartService.cart({
+        where: {
+          userId: id
+        },
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              id: true,
+            }
+          },
+          cartItems: {
+            include: {
+              book: true
+            },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          },
+        }
+      });
+      return cart;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  @Mutation(() => Cart)
-  updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
-    return this.cartService.update(updateCartInput.id, updateCartInput);
-  }
+  // @Mutation(() => Cart)
+  // updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
+  //   return this.cartService.update(updateCartInput.id, updateCartInput);
+  // }
 
   @Mutation(() => Cart)
-  removeCart(@Args('id', { type: () => Int }) id: number) {
-    return this.cartService.remove(id);
+  async removeCart(@Args('id', { type: () => Int }) id: number) {
+    return await this.cartService.remove({
+      where: {
+        userId: id
+      }
+    });
   }
 }

@@ -18,6 +18,7 @@ import { ReviewModule } from './review/review.module';
 import { OrderModule } from './order/order.module';
 import { CartModule } from './cart/cart.module';
 import { UserModule } from './user/user.module';
+import { CartItemModule } from './cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { UserModule } from './user/user.module';
     ReviewModule,
     OrderModule,
     CartModule,
-    UserModule
+    UserModule,
+    CartItemModule
   ]
 })
 export class AppModule { }

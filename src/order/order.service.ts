@@ -7,8 +7,17 @@ import { PrismaService } from 'src/prisma.service';
 export class OrderService {
   constructor(private readonly prismaService: PrismaService) { }
 
-  create(createOrderInput: CreateOrderInput) {
-    return 'This action adds a new order';
+  create = async (
+    data: Prisma.OrderUncheckedCreateInput,
+  ) => {
+    try {
+      const review = await this.prismaService.order.create({
+        data,
+      });
+      return review;
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   order = async (

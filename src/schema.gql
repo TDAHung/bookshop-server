@@ -92,8 +92,31 @@ type BookEntity {
 }
 
 type Cart {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """Cart Items"""
+  cartItems: [CartItemEntity!]!
+
+  """ID of Cart"""
+  id: Float!
+
+  """User"""
+  user: UserEntity!
+
+  """ID of User"""
+  userId: Float!
+}
+
+type CartItemEntity {
+  """Book"""
+  book: BookEntity!
+
+  """Book Id"""
+  bookId: Float!
+
+  """ID of CartItem"""
+  id: Float!
+
+  """Quantity of Item"""
+  quantity: Float!
 }
 
 type CategoryEntity {
@@ -117,13 +140,48 @@ type CategoryEntity {
 }
 
 input CreateCartInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """User id"""
+  userId: Float!
+}
+
+input CreateCartItemInput {
+  """ID of book"""
+  bookId: Int!
+
+  """cart ID of book"""
+  cartId: Int!
+
+  """quantity of book"""
+  quantity: Int!
 }
 
 input CreateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """address of order"""
+  address: String!
+
+  """Email of order user"""
+  email: String!
+
+  """First Name of order user"""
+  firstName: String!
+
+  """Last Name of order user"""
+  lastName: String!
+
+  """Order Items of order user"""
+  orderItems: [OrderItemsConnect!]!
+
+  """phone of order"""
+  phone: String!
+
+  """quantity of books"""
+  quantity: Float!
+
+  """price of total books"""
+  total: Float!
+
+  """User ID"""
+  userId: Float
 }
 
 input CreateReviewInput {
@@ -190,17 +248,19 @@ type MostPopularBookEntity {
 }
 
 type Mutation {
-  createCart(createCartInput: CreateCartInput!): Cart!
-  createOrder(createOrderInput: CreateOrderInput!): OrderEntity!
+  createCart(createCart: CreateCartInput!): Cart!
+  createCartItem(createCartItem: CreateCartItemInput!): CartItemEntity!
+  createOrder(createOrder: CreateOrderInput!): OrderEntity!
   createReview(createReviewInput: CreateReviewInput!): ReviewEntity!
   createUser(createUserInput: CreateUserInput!): UserEntity!
   removeCart(id: Int!): Cart!
+  removeCartItem(id: Int!): CartItemEntity!
   removeReview(id: Int!): ReviewEntity!
   removeUser(id: Int!): UserEntity!
   signIn(signInInput: SignInInput!): SignResponse!
   signUp(signUpInput: SignUpInput!): SignResponse!
   updateBook(updateBookInput: UpdateBookInput!): BookEntity!
-  updateCart(updateCartInput: UpdateCartInput!): Cart!
+  updateCartItem(updateCartItem: UpdateCartItemInput!): CartItemEntity!
   updateUser(updateUserInput: UpdateUserInput!): UserEntity!
 }
 
@@ -238,6 +298,17 @@ type OrderItemEntity {
   quantity: Int!
 }
 
+input OrderItemsConnect {
+  """ID of book"""
+  bookId: Float!
+
+  """Price of books"""
+  price: Float!
+
+  """Quantity of books"""
+  quantity: Float!
+}
+
 type Query {
   author(id: Int!): AuthorEntity!
   authors(limit: Float, order: String, page: Float, search: String, sortBy: String): [AuthorEntity!]!
@@ -246,6 +317,8 @@ type Query {
   cart(id: Int!): Cart!
   categories(order: String, search: String, sortBy: String): [CategoryEntity!]!
   category(id: Int!): CategoryEntity!
+  checkCart(id: Int): Boolean!
+  checkCartItem(bookId: Int!, cartId: Int!): Boolean!
   getMostPopularBooks(limit: Float, page: Float): [MostPopularBookEntity!]!
   order(id: Int!): OrderEntity!
   orders(userID: Int): [OrderEntity!]!
@@ -320,10 +393,12 @@ input UpdateBookInput {
   quantity: Float!
 }
 
-input UpdateCartInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+input UpdateCartItemInput {
+  """ID of Cart Item"""
   id: Int!
+
+  """quantity of Cart Item"""
+  quantity: Int!
 }
 
 input UpdateUserInput {

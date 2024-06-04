@@ -83,6 +83,10 @@ model Review {
 model Order {
   id         Int         @id @default(autoincrement())
   status     OrderStatus
+  firstName  String
+  lastName   String
+  phone      String
+  email      String
   total      Float
   address    String
   createdAt  DateTime    @default(now())
@@ -116,18 +120,20 @@ model Promotion {
 }
 
 model Cart {
-  id     Int   @id @default(autoincrement())
-  userId Int   @unique
-  total  Float
-  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        Int        @id @default(autoincrement())
+  cartItems CartItem[]
+  userId    Int        @unique
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model CartItem {
   id        Int      @id @default(autoincrement())
   quantity  Int
   bookId    Int
+  cartId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 

@@ -3,14 +3,49 @@ import { OrderService } from './order.service';
 import { OrderEntity } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
+import { CartService } from 'src/cart/cart.service';
 
 @Resolver(() => OrderEntity)
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) { }
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly cartService: CartService,
+  ) { }
 
   @Mutation(() => OrderEntity)
-  createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-    return this.orderService.create(createOrderInput);
+  async createOrder(@Args('createOrder') createOrder: CreateOrderInput) {
+    try {
+      const connectOrderItems = {
+        create: createOrder.orderItems.map((orderItems) => {
+          return {
+            quantity: orderItems.quantity,
+            price: orderItems.price,
+            bookId: orderItems.bookId
+          }
+        })
+      };
+      if (createOrder.userId) {
+        await this.cartService.remove({
+          where: {
+            userId: createOrder.userId
+          }
+        });
+      }
+
+      return await this.orderService.create({
+        address: createOrder.address,
+        lastName: createOrder.lastName,
+        firstName: createOrder.firstName,
+        total: createOrder.total,
+        phone: createOrder.phone,
+        email: createOrder.email,
+        orderItems: connectOrderItems,
+        status: 'PENDING',
+        userId: createOrder.userId
+      });
+    } catch (error) {
+
+    }
   }
 
   @Query(() => [OrderEntity], { name: 'orders' })

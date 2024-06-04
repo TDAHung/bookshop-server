@@ -77,5 +77,13 @@ export class ReviewService {
     }
   }
 
+  // avgRating = async () => {
+  //   return await this.prismaService.review.groupBy({
+  //     by: ['bookId'],
+  //     _avg: {
+  //       rating: true
+  //     }
+  //   });
+  // }
 
 }

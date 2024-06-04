@@ -34,41 +34,60 @@ export class BookResolver {
       })
     }
 
-    let sortBy = undefined;
+    let sortBy = [];
+    let sortByReview: any = {};
     if (sortByParams && sortByParams.length > 0) {
-      sortBy = sortByParams.map(param => ({ [param.field]: param.order }));
+      sortByParams.forEach(param => {
+        if (!(param.field === 'reviews')) {
+          sortBy.push({
+            [param.field]: param.order
+          })
+        } else {
+          sortByReview = {
+            reviews: param.order
+          }
+        }
+      })
     }
 
     let filter = [];
+    let filterByReview: any = {};
     if (filterParams && filterParams.length > 0) {
-      filter = filterParams.map(param => {
+
+      filterParams.forEach(param => {
         const { field } = param;
-        let fieldName = '';
-        switch (field) {
-          case 'categories':
-            fieldName = 'categoryId'
-            break;
-          case 'authors':
-            fieldName = 'authorId';
-            break;
-          default:
-            break;
-        }
-        return {
-          [field]: {
-            some: {
-              [fieldName]: {
-                in: param.in.map(Number)
-              },
-              bookId: {
-                not: except ? Number(except) : undefined
+        if (!(field == 'reviews')) {
+          let fieldName = '';
+          switch (field) {
+            case 'categories':
+              fieldName = 'categoryId'
+              break;
+            case 'authors':
+              fieldName = 'authorId';
+              break;
+            default:
+              break;
+          }
+          filter.push({
+            [field]: {
+              some: {
+                [fieldName]: {
+                  in: param.in.map(Number)
+                },
+                bookId: {
+                  not: except ? Number(except) : undefined
+                }
               }
             }
+          })
+        } else {
+          filterByReview = {
+            reviews: param.in
           }
-        };
+        }
+
       });
     }
-
     const books = await this.bookService.books({
       take,
       skip,
@@ -92,7 +111,7 @@ export class BookResolver {
       where: {
         AND: [
           {
-            OR: filter
+            AND: filter
           },
           {
             OR: search
@@ -101,7 +120,7 @@ export class BookResolver {
       },
       orderBy: sortBy
     });
-    const booksWithAvgRating = books.map(book => {
+    let booksWithAvgRating = books.map(book => {
       // @ts-ignore
       const totalRating = book.reviews.reduce((sum: number, review: any) => sum + review.rating, 0);
       // @ts-ignore
@@ -111,6 +130,20 @@ export class BookResolver {
         avgRating: Number.isNaN(avgRating) ? 0 : avgRating
       };
     });
+
+    if (!(Object.entries(filterByReview).length === 0)) {
+      booksWithAvgRating = booksWithAvgRating.filter(book => {
+        return (book.avgRating >= filterByReview.reviews[0] && book.avgRating <= filterByReview.reviews[1])
+      });
+    }
+
+    if (sortByReview.reviews === "asc") {
+      booksWithAvgRating.sort((a, b) => a.avgRating - b.avgRating)
+    }
+    else if (sortByReview.reviews === "desc") {
+      booksWithAvgRating.sort((a, b) => b.avgRating - a.avgRating)
+    }
+
     return booksWithAvgRating;
   }
 
