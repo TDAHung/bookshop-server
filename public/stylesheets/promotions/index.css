@@ -1,0 +1,26 @@
+.t-head,
+.t-row {
+    width: calc(100% / 4);
+}
+
+.t-head-wrapper,
+.t-row-wrapper {
+    width: 95%;
+    padding: 1rem;
+}
+
+.table {
+    border-radius: 2rem;
+}
+
+.promotion__id {
+    width: 2rem;
+}
+
+.promotion__type {
+    width: 7rem;
+}
+
+.promotion__type {
+    width: 10rem;
+}

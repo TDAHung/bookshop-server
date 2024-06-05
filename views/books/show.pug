@@ -2,34 +2,34 @@ extends ../layouts/admin
 
 block content
     div.py-4.text-right
-        a.rounded-md.bg-indigo-600.px-3.py-2.text-2xl.font-semibold.text-white.shadow-sm(href=`edit/${path}/${book.id}` class='hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600') Edit
+        a.rounded-md.bg-indigo-600.px-3.py-2.text-2xl.font-semibold.text-white.shadow-sm(href=`/${path}/edit/${book.id}` class='hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600') Edit
     .grid.grid-cols-5.gap-4
         .col-span-3.p-8(class='bg-white')
             .font-bold.text-2xl.ps-4.mb-4 General Information
-            .grid.grid-rows-6.grid-flow-col.gap-4.text-lg.info-wrapper
+            .text-lg.info-wrapper
                 .book
                     .font-medium.text-xl.ps-4 ID
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.id
                 .book
                     .font-medium.text-xl.ps-4 Name
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.title
                 .book
                     .font-medium.text-xl.ps-4 Description
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.description
                 .book
                     .font-medium.text-xl.ps-4 Price
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.price + " (USD)"
                 .book
                     .font-medium.text-xl.ps-4 Discount
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.discount + " (%)"
                 .book
                     .font-medium.text-xl.ps-4 Quantity
-                    .bg-slate-50.p-4.mt-4.rounded-2xl
+                    .bg-slate-50.p-4.my-4.rounded-2xl
                         = book.quantity
         .col-span-2.p-8(class='bg-white').overflow-y-scroll
             .font-bold.text-2xl.mb-4 Book Categories
@@ -55,6 +55,7 @@ block content
                     .col-span-2.font-medium.text-xl.ps-4.flex.items-center= object.author.firstName + " " + object.author.lastName
 
     div.table.w-full.bg-white.h-full.mt-12
+        .font-bold.text-2xl.ps-4.mb-4 Reivews of Book
         if (book.reviews.length != 0)
             ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
                 li.t-head.review__rating.text-center Rating

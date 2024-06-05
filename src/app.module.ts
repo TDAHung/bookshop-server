@@ -35,6 +35,7 @@ import { CartItemModule } from './cart-item/cart-item.module';
     AdminAuthModule,
     AdminReviewModule,
     AdminCategoryModule,
+    AdminPromotionListModule,
     BookModule,
     AuthModule,
     CategoryModule,

@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Book as BookModel, Prisma } from '@prisma/client';
 import { BookEntity } from './entities/book.entity';
+import { FilterBy, SearchBy, SortBy } from './dto/sort-book.args';
 
 @Injectable()
 export class BookService {
@@ -104,6 +105,92 @@ export class BookService {
       return book;
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  filter = (
+    params: {
+      searchParams?: Array<SearchBy>,
+      sortByParams?: Array<SortBy>,
+      filterParams?: Array<FilterBy>,
+      exceptParams?: string
+    }
+  ) => {
+    const { searchParams, sortByParams, filterParams, exceptParams } = params;
+
+    const except: string = exceptParams || '';
+    let search = [];
+    if (searchParams && searchParams.length > 0) {
+      search = searchParams.map((param) => {
+        const { field, contains } = param;
+        return {
+          [field]: {
+            contains: contains
+          }
+        }
+      })
+    }
+
+    let sortBy = [];
+    let sortByReview: any = {};
+    if (sortByParams && sortByParams.length > 0) {
+      sortByParams.forEach(param => {
+        if (!(param.field === 'reviews')) {
+          sortBy.push({
+            [param.field]: param.order
+          })
+        } else {
+          sortByReview = {
+            reviews: param.order
+          }
+        }
+      })
+    }
+
+    let filter = [];
+    let filterByReview: any = {};
+    if (filterParams && filterParams.length > 0) {
+
+      filterParams.forEach(param => {
+        const { field } = param;
+        if (!(field == 'reviews')) {
+          let fieldName = '';
+          switch (field) {
+            case 'categories':
+              fieldName = 'categoryId'
+              break;
+            case 'authors':
+              fieldName = 'authorId';
+              break;
+            default:
+              break;
+          }
+          filter.push({
+            [field]: {
+              some: {
+                [fieldName]: {
+                  in: param.in.map(Number)
+                },
+                bookId: {
+                  not: except ? Number(except) : undefined
+                }
+              }
+            }
+          })
+        } else {
+          filterByReview = {
+            reviews: param.in
+          }
+        }
+
+      });
+    }
+    return {
+      filter,
+      search,
+      sortBy,
+      filterByReview,
+      sortByReview
     }
   }
 }

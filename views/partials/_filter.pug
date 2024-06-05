@@ -8,5 +8,5 @@
             input.search.h-full(class="w-4/5" type="text" name="search" placeholder="Search Here")
             input.search.h-full.bg-transparent(type="number" name="limit" placeholder="Limit per page")
     a.clear-filter.text-2xl.bg-red-100(href=`${path}`) Clear Filter
-    if (path == 'books' || path == 'authors' || path == 'categories')
+    if (path == 'books' || path == 'authors' || path == 'categories' || path == 'promotions')
         a.create.text-2xl.float-right(href=`${path}/create`)= "Add " + transformedPath

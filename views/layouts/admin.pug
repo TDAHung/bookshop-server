@@ -49,6 +49,11 @@ html(lang="en")
             a(href="/authors")
               i.fa-solid.fa-pencil
               |  Authors
+        li.navbar__link.px-8.h-20(class= path === 'promotions' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
+            a(href="/promotions")
+              i.fa-regular.fa-address-card
+              |  Promotions
         li.navbar__link.px-8.h-20(class= path === 'about' ? 'active' : '')
           div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
             a(href="/about")
@@ -91,3 +96,5 @@ html(lang="en")
         script(src="/javascript/files.js")
     else if(path == "categories")
       script(src="/javascript/modal.js")
+    else if(path == "promotions")
+      script(src="/javascript/promotions.js")

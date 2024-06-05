@@ -30,7 +30,7 @@ block content
                 each orderItem in order.orderItems
                     div
                         div.orderItemImages
-                            img(src=`${orderItem.book.images}`, alt="asdasd")
+                            img(src=`${orderItem.book.images[0].url}`, alt="asdasd")
                         div.orderItemTitle
                             span Book Title:
                             span= orderItem.book.title

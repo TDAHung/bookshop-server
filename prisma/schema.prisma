@@ -65,7 +65,8 @@ model Book {
   reviews     Review[]
   orderItems  OrderItem[]
   cartItems   CartItem[]
-  promotions  Promotion[]
+  promotionId Int?
+  promotion   Promotion?     @relation(fields: [promotionId], references: [id])
 }
 
 model Review {
@@ -109,14 +110,13 @@ model OrderItem {
 }
 
 model Promotion {
-  id        Int           @id @default(autoincrement())
-  type      PromotionType
+  id        Int       @id @default(autoincrement())
+  type      Json
   startDate DateTime?
   endDate   DateTime?
-  bookId    Int
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @default(now())
-  book      Book          @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  books     Book[]
 }
 
 model Cart {
@@ -179,9 +179,4 @@ enum OrderStatus {
   SHIPPING
   SHIPPED
   CANCELED
-}
-
-enum PromotionType {
-  ON_SALE
-  POPULAR
 }

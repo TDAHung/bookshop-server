@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { BookEntity } from 'src/book/entities/book.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 
 @ObjectType()
@@ -9,7 +10,7 @@ export class OrderItemEntity {
   @Field(() => Int, { description: "Quantity of Item" })
   quantity: number;
 
-  @Field(() => Int, { description: "Price of the Items" })
+  @Field({ description: "Price of the Items" })
   price: number;
 
   @Field(() => Int, { description: "Book ID" })
@@ -17,6 +18,9 @@ export class OrderItemEntity {
 
   @Field(() => Int, { description: "Order ID" })
   orderId: number;
+
+  @Field(() => BookEntity, { description: "Book of Order Item" })
+  book: BookEntity;
 }
 
 type OrderStatus = "PENDING" | "COMPLETED" | "SHIPPING" | "SHIPPED" | "CANCELED";
@@ -28,6 +32,18 @@ export class OrderEntity {
 
   @Field({ description: "Status of Order" })
   status: OrderStatus;
+
+  @Field({ description: "Phone of Order" })
+  phone: string;
+
+  @Field({ description: "Total Price of Order" })
+  total: number;
+
+  @Field({ description: "First Name of Order" })
+  firstName: string;
+
+  @Field({ description: "Last Name of Order" })
+  lastName: string;
 
   @Field(() => [OrderItemEntity], { description: "Items of Order" })
   orderItems: OrderItemEntity[];

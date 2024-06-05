@@ -52,14 +52,19 @@ export class OrderResolver {
   async findAll(
     @Args('userID', { type: () => Int, nullable: true }) userID: number
   ) {
-    return await this.orderService.orders({
+    const orders = await this.orderService.orders({
       where: {
         userId: userID
       },
       include: {
-        orderItems: true
+        orderItems: {
+          include: {
+            book: true
+          }
+        }
       }
     });
+    return orders;
   }
 
   @Query(() => OrderEntity, { name: 'order' })
@@ -69,6 +74,13 @@ export class OrderResolver {
     return this.orderService.order({
       where: {
         id: id,
+      },
+      include: {
+        orderItems: {
+          include: {
+            book: true
+          }
+        }
       }
     });
   }

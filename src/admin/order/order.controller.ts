@@ -104,7 +104,6 @@ export class AdminOrderController {
                 },
             },
         );
-
         return this.render('edit', {
             order,
             user: session.passport.user

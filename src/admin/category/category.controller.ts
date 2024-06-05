@@ -72,7 +72,7 @@ export class AdminCategoryController {
         });
     }
 
-    
+
     @Get("create")
     @Render('categories/create')
     async create(
@@ -99,7 +99,6 @@ export class AdminCategoryController {
         } catch (error) {
             throw error;
         }
-
     }
 
     @Get("delete/:id")

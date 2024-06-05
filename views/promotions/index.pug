@@ -1,0 +1,36 @@
+extends ../layouts/admin
+
+block content
+    include ../partials/_filter
+    div.table.w-full.bg-white.relative.h-full.my-4
+        if (paging.total != 0)
+            ul.t-head-wrapper.ml-8.my-8.flex.justify-between.text-2xl.mt-16
+                li.t-head.promotion__id ID
+                li.t-head.promotion__type Type
+                li.t-head.promotion__value Sale Value
+                li.t-head.promotion__startDate Start Date
+                li.t-head.promotion__endDate End Date
+                li.t-head Last updated at
+            div.line
+            each promotion in promotions
+                .relative
+                    a.t-row-wrapper.ml-8.flex.justify-between.items-center.text-lg(href=`/promotions/edit/${promotion.id}` class="hover:bg-slate-100 transition-colors")
+                        div.t-row.promotion__id= promotion.id
+                        div.t-row.promotion__type= promotion.type.saleType
+                        div.t-row.promotion__value $
+                            = promotion.type.saleValue
+                        div.t-row.promotion__startDate= promotion.startDate
+                        div.t-row.promotion__endDate= promotion.endDate
+                        div.t-row.updated_at= promotion.updatedAt
+                    div.absolute.action.bottom-0
+                            div.absolute.w-20(class="right-1/4").flex.justify-between.items-center
+                                button(href-button=`/promotions/delete/${promotion.id}` class="action-path delete-btn z-50")
+                                    img(src="./images/delete.png" alt="")
+            include ../partials/_paging
+            include ../partials/_modal
+        else
+            div.w-full.flex.justify-center.h-full.items-center
+                div.empty-data.text-center
+                    i.fa-regular.fa-folder-open
+                    div Empty data
+

@@ -39,3 +39,12 @@
     transition: all ease-in-out 300ms;
     opacity: 0;
 }
+
+.show-more-btn,
+.show-less-btn {
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    z-index: 999;
+}

@@ -268,20 +268,35 @@ type OrderEntity {
   """Address of Order"""
   address: String!
 
+  """First Name of Order"""
+  firstName: String!
+
   """ID of Order"""
   id: Int!
+
+  """Last Name of Order"""
+  lastName: String!
 
   """Items of Order"""
   orderItems: [OrderItemEntity!]!
 
+  """Phone of Order"""
+  phone: String!
+
   """Status of Order"""
   status: String!
+
+  """Total Price of Order"""
+  total: Float!
 
   """Address of Order"""
   user: UserEntity
 }
 
 type OrderItemEntity {
+  """Book of Order Item"""
+  book: BookEntity!
+
   """Book ID"""
   bookId: Int!
 
@@ -292,7 +307,7 @@ type OrderItemEntity {
   orderId: Int!
 
   """Price of the Items"""
-  price: Int!
+  price: Float!
 
   """Quantity of Item"""
   quantity: Int!
@@ -324,7 +339,7 @@ type Query {
   orders(userID: Int): [OrderEntity!]!
   reviews(bookId: Int!): [ReviewEntity!]!
   totalAuthors(search: String): Float!
-  totalBooks(search: String): Float!
+  totalBooks(except: String, filter: [FilterBy!], search: [SearchBy!]): Float!
   user(id: Int!): UserEntity!
 }
 

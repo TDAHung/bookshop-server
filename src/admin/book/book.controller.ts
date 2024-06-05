@@ -1,3 +1,4 @@
+import { AdminPromotionListService } from './../promotion-list/promotion-list.service';
 import { AdminBookCategoryService } from './../book_category/book_category.service';
 import { Body, Controller, Get, Param, Patch, Post, Query, Render, Res, Session, UploadedFile, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AdminBookService } from './book.service';
@@ -8,7 +9,6 @@ import { AwsService } from '../aws/aws.service';
 import { AdminAuthorService } from '../author/author.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { CustomExceptionFilter } from '../filter/custom-exception.filter';
-import { AdminReviewService } from '../reviews/review.service';
 
 @UseGuards(AuthenticatedGuard)
 @UseFilters(CustomExceptionFilter)
@@ -20,7 +20,8 @@ export class AdminBookController {
         private readonly adminCategoryService: AdminCategoryService,
         private readonly adminBookCategoryService: AdminBookCategoryService,
         private readonly adminAuthorService: AdminAuthorService,
-        private readonly awsService: AwsService
+        private readonly adminProtionListService: AdminPromotionListService,
+        private readonly awsService: AwsService,
     ) { }
     private readonly PATH = 'books';
     private render(
@@ -246,7 +247,9 @@ export class AdminBookController {
         const book = await this.adminBookService.book({
             id: Number(id)
         }, {
-            categories: true
+            categories: true,
+            authors: true,
+            promotion: true
         });
 
         const categories = await this.adminCategoryService.categories({
@@ -255,15 +258,28 @@ export class AdminBookController {
             }
         });
 
+        const promotions = await this.adminProtionListService.promotions({
+            where: {
+                endDate: {
+                    gt: new Date()
+                }
+            }
+        });
+
         return this.render('edit', {
             book,
             categories,
+            promotions,
             user: session.passport.user
         })
     }
 
     @Post("update/:id")
     async updateBook(@Body() params: any, @Param('id') id: number, @Res() res) {
+        let promotionId;
+        if (params.promotionId != '-1') {
+            promotionId = Number(params.promotionId)
+        }
         if (!Array.isArray(params.categories)) {
             params.categories = params.categories.split('');
         }
@@ -293,6 +309,7 @@ export class AdminBookController {
                 categories: {
                     create: connectCategory
                 },
+                promotionId: promotionId
             },
         });
         return res.redirect("/books");

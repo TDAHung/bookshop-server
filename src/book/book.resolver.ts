@@ -20,74 +20,12 @@ export class BookResolver {
   ) {
     const take: number | undefined = limit ? Number(limit) : ItemsPerPage.books;
     const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
-    const except: string = exceptParams || '';
-
-    let search = [];
-    if (searchParams && searchParams.length > 0) {
-      search = searchParams.map((param) => {
-        const { field, contains } = param;
-        return {
-          [field]: {
-            contains: contains
-          }
-        }
-      })
-    }
-
-    let sortBy = [];
-    let sortByReview: any = {};
-    if (sortByParams && sortByParams.length > 0) {
-      sortByParams.forEach(param => {
-        if (!(param.field === 'reviews')) {
-          sortBy.push({
-            [param.field]: param.order
-          })
-        } else {
-          sortByReview = {
-            reviews: param.order
-          }
-        }
-      })
-    }
-
-    let filter = [];
-    let filterByReview: any = {};
-    if (filterParams && filterParams.length > 0) {
-
-      filterParams.forEach(param => {
-        const { field } = param;
-        if (!(field == 'reviews')) {
-          let fieldName = '';
-          switch (field) {
-            case 'categories':
-              fieldName = 'categoryId'
-              break;
-            case 'authors':
-              fieldName = 'authorId';
-              break;
-            default:
-              break;
-          }
-          filter.push({
-            [field]: {
-              some: {
-                [fieldName]: {
-                  in: param.in.map(Number)
-                },
-                bookId: {
-                  not: except ? Number(except) : undefined
-                }
-              }
-            }
-          })
-        } else {
-          filterByReview = {
-            reviews: param.in
-          }
-        }
-
-      });
-    }
+    const { filter, search, sortBy, sortByReview, filterByReview } = this.bookService.filter({
+      searchParams,
+      sortByParams,
+      filterParams,
+      exceptParams
+    });
     const books = await this.bookService.books({
       take,
       skip,
@@ -149,27 +87,51 @@ export class BookResolver {
 
   @Query(() => Number, { name: 'totalBooks' })
   async getTotalBooks(
-    @Args('search', { nullable: true }) searchParams?: string,
+    @Args('search', { nullable: true, type: () => [SearchBy] }) searchParams?: Array<SearchBy>,
+    @Args('filter', { nullable: true, type: () => [FilterBy] }) filterParams?: Array<FilterBy>,
+    @Args('except', { nullable: true }) exceptParams?: string,
   ) {
-    const search: string = searchParams || '';
-    const total = await this.bookService.total({
+    const { search, filter, filterByReview } = this.bookService.filter({
+      searchParams,
+      filterParams,
+      exceptParams,
+    });
+    const books = await this.bookService.books({
+      include: {
+        reviews: {
+          include: {
+            user: true
+          }
+        }
+      },
       where: {
-        OR: [
+        AND: [
           {
-            title: {
-              contains: search
-            }
-          }, {
-            categories: {
-              some: {
-                id: Number(search)
-              }
-            }
+            AND: filter
+          },
+          {
+            OR: search
           }
         ]
-      }
+      },
     });
-    return total;
+    let booksWithAvgRating = books.map(book => {
+      // @ts-ignore
+      const totalRating = book.reviews.reduce((sum: number, review: any) => sum + review.rating, 0);
+      // @ts-ignore
+      const avgRating = totalRating / book.reviews.length;
+      return {
+        ...book,
+        avgRating: Number.isNaN(avgRating) ? 0 : avgRating
+      };
+    });
+
+    if (!(Object.entries(filterByReview).length === 0)) {
+      booksWithAvgRating = booksWithAvgRating.filter(book => {
+        return (book.avgRating >= filterByReview.reviews[0] && book.avgRating <= filterByReview.reviews[1])
+      });
+    }
+    return booksWithAvgRating.length;
   }
 
   @Query(() => BookEntity, { name: 'book' })
