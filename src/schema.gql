@@ -78,6 +78,9 @@ type BookEntity {
   """Price of Book"""
   price: Float!
 
+  """Promotion of Book"""
+  promotion: PromotionEntity
+
   """Quantity of Book"""
   quantity: Float!
 
@@ -230,23 +233,6 @@ type ImageJson {
   url: String!
 }
 
-type MostPopularBookEntity {
-  """Description of Book"""
-  description: String!
-
-  """Id of Book"""
-  id: Float!
-
-  """Images of Book"""
-  images: [ImageJson!]!
-
-  """Images of Book"""
-  rating: Float!
-
-  """Title of Book"""
-  title: String!
-}
-
 type Mutation {
   createCart(createCart: CreateCartInput!): Cart!
   createCartItem(createCartItem: CreateCartItemInput!): CartItemEntity!
@@ -324,6 +310,31 @@ input OrderItemsConnect {
   quantity: Float!
 }
 
+type PromotionEntity {
+  """Books of Promotions"""
+  books: [BookEntity!]
+
+  """Type Promotion"""
+  endDate: DateTime!
+
+  """ID of Promotion"""
+  id: Int!
+
+  """Type Promotion"""
+  startDate: DateTime!
+
+  """Type Promotion"""
+  type: TypePromotionEntity!
+}
+
+input PromotionSortBy {
+  """sort by field"""
+  field: String!
+
+  """Order by asc or desc"""
+  order: String!
+}
+
 type Query {
   author(id: Int!): AuthorEntity!
   authors(limit: Float, order: String, page: Float, search: String, sortBy: String): [AuthorEntity!]!
@@ -334,9 +345,10 @@ type Query {
   category(id: Int!): CategoryEntity!
   checkCart(id: Int): Boolean!
   checkCartItem(bookId: Int!, cartId: Int!): Boolean!
-  getMostPopularBooks(limit: Float, page: Float): [MostPopularBookEntity!]!
   order(id: Int!): OrderEntity!
   orders(userID: Int): [OrderEntity!]!
+  promotion(id: Int!): PromotionEntity!
+  promotions(limit: Float, sortBy: [PromotionSortBy!]): [PromotionEntity!]!
   reviews(bookId: Int!): [ReviewEntity!]!
   totalAuthors(search: String): Float!
   totalBooks(except: String, filter: [FilterBy!], search: [SearchBy!]): Float!
@@ -399,6 +411,14 @@ input SortBy {
 
   """Order by asc or desc"""
   order: String!
+}
+
+type TypePromotionEntity {
+  """Sale Type of Promotion"""
+  saleType: String!
+
+  """Sale Type of Promotion"""
+  saleValue: String!
 }
 
 input UpdateBookInput {

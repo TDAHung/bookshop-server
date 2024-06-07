@@ -6,6 +6,7 @@ import {
     UnauthorizedException,
     ForbiddenException,
     BadRequestException,
+    NotFoundException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
@@ -15,7 +16,6 @@ export class CustomExceptionFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-
         switch (true) {
             case exception instanceof UnauthorizedException:
                 request.flash('Error', 'Wrong EMAIL or PASSWORD!');
@@ -45,6 +45,9 @@ export class CustomExceptionFilter implements ExceptionFilter {
                     response.redirect(`${method}`);
                 }
                 break;
+
+            case exception instanceof NotFoundException:
+                response.redirect('/404');
             default:
                 break;
         }

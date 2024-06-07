@@ -44,7 +44,8 @@ export class BookResolver {
           include: {
             user: true
           }
-        }
+        },
+        promotion: true
       },
       where: {
         AND: [
@@ -82,6 +83,7 @@ export class BookResolver {
       booksWithAvgRating.sort((a, b) => b.avgRating - a.avgRating)
     }
 
+    console.log(booksWithAvgRating);
     return booksWithAvgRating;
   }
 
@@ -160,24 +162,10 @@ export class BookResolver {
               }
             }
           }
-        }
+        },
+        promotion: true
       }
     })
-  }
-
-
-  @Query(() => [MostPopularBookEntity], { name: 'getMostPopularBooks' })
-  async getPopularBook(
-    @Args('page', { nullable: true }) page?: number,
-    @Args('limit', { nullable: true }) limit?: number,
-  ) {
-    const take: number | undefined = limit ? Number(limit) : ItemsPerPage.books;
-    const skip: number | undefined = page ? (Number(page) - 1) * take : 0;
-    const books = await this.bookService.getMostPopularBook({
-      skip,
-      take
-    });
-    return books;
   }
 
   @Mutation(() => BookEntity)

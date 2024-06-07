@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, Post, Query, Render, Req, Res, Session, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render, Req, Res, Session, UseFilters, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AdminCategoryService } from './category.service';
 import { ItemsPerPage } from 'src/global/globalPaging';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';

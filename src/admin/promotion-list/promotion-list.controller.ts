@@ -1,19 +1,37 @@
-import { ItemsPerPage } from './../../global/globalPaging';
+import { ItemsPerPage } from 'src/global/globalPaging';
 import { CustomExceptionFilter } from './../filter/custom-exception.filter';
 import { AuthenticatedGuard } from './../auth/guards/authenticated.guard';
 import { Controller, UseGuards, UseFilters, Get, Render, Session, Query, Req, ValidationPipe, Body, Res, Post } from '@nestjs/common';
 import { AdminPromotionListService } from './promotion-list.service';
 import { CreatePromotionDTO } from './dto/create-promotion.dto';
-
-
+const schedule = require('node-schedule')
 
 @UseGuards(AuthenticatedGuard)
 @UseFilters(CustomExceptionFilter)
 @Controller("promotions")
 export class AdminPromotionListController {
     constructor(
-        private readonly promotionService: AdminPromotionListService
+        private readonly promotionService: AdminPromotionListService,
     ) {
+        (async () => {
+            const promotions = await this.promotionService.promotions({
+                where: {
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+
+            promotions.forEach(promotion => {
+                const job = schedule.scheduleJob(promotion.endDate, async () => {
+                    await this.promotionService.delete({
+                        where: {
+                            id: promotion.id
+                        }
+                    });
+                })
+            });
+        })();
     }
 
     private readonly PATH = 'promotions';
@@ -88,13 +106,20 @@ export class AdminPromotionListController {
 
             const startDate = toISOStringWithTimezone(params.startDate);
             const endDate = toISOStringWithTimezone(params.endDate);
-            await this.promotionService.create({
+            const promotion = await this.promotionService.create({
                 type: {
                     saleType: params.saleType,
                     saleValue: params.saleValue
                 },
                 startDate: startDate,
                 endDate: endDate
+            });
+            const job = schedule.scheduleJob(endDate, async () => {
+                await this.promotionService.delete({
+                    where: {
+                        id: promotion.id
+                    }
+                });
             });
             return res.redirect("/promotions");
         } catch (error) {

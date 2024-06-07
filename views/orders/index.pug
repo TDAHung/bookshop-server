@@ -19,10 +19,8 @@ block content
                     div.t-row.order__total.text-center= order.total
                     div.t-row.order__address= order.address
                     div.t-row.order__customer
-                        if (order.user)
-                            = order.user.firstName + " " + order.user.lastName
-                        else
-                            | Anonymous
+                        if (order)
+                            = order.firstName + " " + order.lastName
                     if (order.status == 'COMPLETED')
                         div.t-row.order__status.text-center.completed= order.status
                     else if (order.status == 'CANCELED')

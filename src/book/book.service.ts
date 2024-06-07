@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Book as BookModel, Prisma } from '@prisma/client';
 import { BookEntity } from './entities/book.entity';
@@ -17,13 +17,13 @@ export class BookService {
   ): Promise<BookModel | null> => {
     try {
       const { where, include } = params;
-      const post = await this.prismaService.book.findUniqueOrThrow({
+      const post = await this.prismaService.book.findUnique({
         where,
         include
       });
       return post;
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.NOT_FOUND);
+      throw new NotFoundException({ message: error.message });
     }
   }
 
@@ -31,14 +31,13 @@ export class BookService {
     params: {
       skip?: number,
       take?: number,
-      select?: Prisma.BookSelect,
       include?: Prisma.BookInclude,
       cursor?: Prisma.BookWhereUniqueInput,
       where?: Prisma.BookWhereInput,
       orderBy?: Prisma.BookOrderByWithRelationInput[] | Prisma.BookOrderByWithRelationInput;
     }
   ): Promise<BookModel[] | null> => {
-    const { skip, take, select, cursor, where, orderBy, include } = params;
+    const { skip, take, cursor, where, orderBy, include } = params;
     const books = await this.prismaService.book.findMany({
       skip,
       take,
@@ -135,14 +134,24 @@ export class BookService {
     let sortByReview: any = {};
     if (sortByParams && sortByParams.length > 0) {
       sortByParams.forEach(param => {
-        if (!(param.field === 'reviews')) {
-          sortBy.push({
-            [param.field]: param.order
-          })
-        } else {
-          sortByReview = {
-            reviews: param.order
-          }
+        switch (param.field) {
+          case 'reviews':
+            sortByReview = {
+              reviews: param.order
+            }
+            break;
+          case 'orders':
+            sortBy.push({
+              orderItems: {
+                _count: param.order
+              }
+            });
+            break;
+          default:
+            sortBy.push({
+              [param.field]: param.order
+            })
+            break;
         }
       })
     }

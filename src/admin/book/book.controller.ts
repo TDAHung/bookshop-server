@@ -69,7 +69,7 @@ export class AdminBookController {
                 ]
             },
             orderBy: {
-                updatedAt: 'asc',
+                updatedAt: 'desc',
             }
         });
 
@@ -180,7 +180,7 @@ export class AdminBookController {
             });
             return res.redirect("/books");
         } catch (error) {
-            console.log(error);
+            throw new error;
         }
     }
 
@@ -281,7 +281,7 @@ export class AdminBookController {
             promotionId = Number(params.promotionId)
         }
         if (!Array.isArray(params.categories)) {
-            params.categories = params.categories.split('');
+            params.categories = [params.categories];
         }
         const connectCategory = params.categories.map((categoryId: string) => {
             return {

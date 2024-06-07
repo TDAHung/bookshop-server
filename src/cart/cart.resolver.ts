@@ -46,7 +46,11 @@ export class CartResolver {
           },
           cartItems: {
             include: {
-              book: true
+              book: {
+                include: {
+                  promotion: true
+                }
+              }
             },
             orderBy: {
               createdAt: 'desc'
@@ -59,11 +63,6 @@ export class CartResolver {
       throw error;
     }
   }
-
-  // @Mutation(() => Cart)
-  // updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
-  //   return this.cartService.update(updateCartInput.id, updateCartInput);
-  // }
 
   @Mutation(() => Cart)
   async removeCart(@Args('id', { type: () => Int }) id: number) {

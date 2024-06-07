@@ -78,20 +78,14 @@ export class OrderResolver {
       include: {
         orderItems: {
           include: {
-            book: true
+            book: {
+              include: {
+                promotion: true
+              }
+            }
           }
         }
       }
     });
   }
-
-  // @Mutation(() => OrderEntity)
-  // updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
-  //   return this.orderService.update(updateOrderInput.id, updateOrderInput);
-  // }
-
-  // @Mutation(() => OrderEntity)
-  // removeOrder(@Args('id', { type: () => Int }) id: number) {
-  //   return this.orderService.remove(id);
-  // }
 }

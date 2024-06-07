@@ -26,17 +26,23 @@ block content
                     .mt-8.flex.items-center
                         label.text-2xl.font-medium.leading-6.text-gray-900.me-8 Address
                         div.border-0.bg-transparent.pl-1.text-gray-900.text-xl= order.address
+                    .mt-8.flex.items-center
+                        label.text-2xl.font-medium.leading-6.text-gray-900.me-8 User
+                        div.border-0.bg-transparent.pl-1.text-gray-900.text-xl= order.firstName + " " + order.lastName
+                    .mt-8.flex.items-center
+                        label.text-2xl.font-medium.leading-6.text-gray-900.me-8 Phone
+                        div.border-0.bg-transparent.pl-1.text-gray-900.text-xl= order.phone
             .grid.grid-cols-4.gap-4
                 each orderItem in order.orderItems
                     div
                         div.orderItemImages
-                            img(src=`${orderItem.book.images[0].url}`, alt="asdasd")
+                            img(src=`${orderItem.book.images[0].url}`, class="h-full" ,alt=`${orderItem.book.images[0].name}`)
                         div.orderItemTitle
                             span Book Title:
                             span= orderItem.book.title
                         div.orderItemDiscount
                             span Discount:
-                            span= `${orderItem.book.discount * 100}%`
+                            span= `${orderItem.book.discount}%`
                         div.orderItemPrice
                             span Price:
                             span= `${orderItem.price} (USD)`

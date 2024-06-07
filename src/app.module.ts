@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, UseFilters } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -19,6 +19,9 @@ import { OrderModule } from './order/order.module';
 import { CartModule } from './cart/cart.module';
 import { UserModule } from './user/user.module';
 import { CartItemModule } from './cart-item/cart-item.module';
+import { PromotionModule } from './promotion/promotion.module';
+import { AboutModule } from './admin/about/about.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -36,6 +39,7 @@ import { CartItemModule } from './cart-item/cart-item.module';
     AdminReviewModule,
     AdminCategoryModule,
     AdminPromotionListModule,
+    AboutModule,
     BookModule,
     AuthModule,
     CategoryModule,
@@ -44,7 +48,9 @@ import { CartItemModule } from './cart-item/cart-item.module';
     OrderModule,
     CartModule,
     UserModule,
-    CartItemModule
-  ]
+    CartItemModule,
+    PromotionModule
+  ],
+  controllers: [AppController]
 })
 export class AppModule { }

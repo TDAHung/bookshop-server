@@ -21,10 +21,6 @@ export class CartService {
     }
   }
 
-  // findAll() {
-  //   return `This action returns all cart`;
-  // }
-
   async cart(
     params: {
       where: Prisma.CartWhereUniqueInput,
@@ -43,22 +39,6 @@ export class CartService {
       throw error;
     }
   }
-  // total = async (
-  //   params: {
-  //     where: Prisma.CartWhereUniqueInput,
-  //   }
-  // ) => {
-  //   try {
-  //     const { where } = params;
-  //     return this.cart
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // update(id: number, updateCartInput: UpdateCartInput) {
-  //   return `This action updates a #${id} cart`;
-  // }
 
   remove = async (
     params: {

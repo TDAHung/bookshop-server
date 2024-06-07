@@ -2,6 +2,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { JsonValue } from "@prisma/client/runtime/library";
 import { AuthorBookEntity } from 'src/author_book/entities/author_book.entity';
 import { BookCategoryEntity } from 'src/book_category/entities/book_category.entity';
+import { PromotionEntity } from 'src/promotion/entities/promotion.entity';
 import { ReviewEntity } from 'src/review/entities/review.entity';
 
 @ObjectType()
@@ -71,6 +72,9 @@ export class BookEntity {
 
   @Field({ description: 'Review of Book' })
   avgRating?: number;
+
+  @Field(() => PromotionEntity, { nullable: true, description: 'Promotion of Book' })
+  promotion?: PromotionEntity;
 
   @Field({ description: 'Title of Book' })
   createdAt?: Date;
