@@ -47,6 +47,14 @@ export class AuthService {
       if (user) {
         throw new HttpException({ message: "This email has been used" }, HttpStatus.UNAUTHORIZED);
       }
+      const usernameFound = await this.prisma.user.findUnique({
+        where: {
+          username
+        }
+      });
+      if (usernameFound) {
+        throw new HttpException({ message: "This username has been used" }, HttpStatus.UNAUTHORIZED);
+      }
       const newUser = await this.prisma.user.create({
         data: {
           email,
@@ -59,7 +67,7 @@ export class AuthService {
       });
       return await this.token.generateToken(newUser);
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.UNAUTHORIZED);
+      throw new HttpException({ message: "Oops, Some thing wrong check your details" }, HttpStatus.UNAUTHORIZED);
     }
   }
 }

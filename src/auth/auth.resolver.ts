@@ -4,6 +4,7 @@ import { Auth } from './entities/auth.entity';
 import { SignResponse } from './dto/sign-response';
 import { SignUpInput } from './dto/sign-up.input';
 import { SignInInput } from './dto/sign-in.input';
+import { UsePipes, ValidationPipe } from '@nestjs/common';
 
 @Resolver(() => Auth)
 export class AuthResolver {

@@ -55,7 +55,7 @@ export class AdminHomeController {
         return this.render('index', {
             totalPrice,
             mostPopularBook,
-            total6months,
+            total6months: total6months.toFixed(2),
             orders,
             userWithMostTotalOrder: userWithMostTotalOrder[0],
             avgReviewStars: avgReviewStars,

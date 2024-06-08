@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import flash = require('connect-flash');
 import { CustomExceptionFilter } from './admin/filter/custom-exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -23,7 +24,6 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
-
   app.useGlobalFilters(new CustomExceptionFilter());
 
   app.use(passport.initialize());

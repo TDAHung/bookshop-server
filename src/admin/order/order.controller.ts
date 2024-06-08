@@ -52,7 +52,7 @@ export class AdminOrderController {
                 ]
             },
             orderBy: {
-                updatedAt: 'asc',
+                updatedAt: 'desc',
             },
         });
         const total = await this.adminOrderSerivice.total({

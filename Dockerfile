@@ -1,42 +1,20 @@
-# Stage 1: Build the application
-FROM node:16 AS builder
+# Use an official Node.js runtime as the base image
+FROM node:20
 
-# Create app directory
-WORKDIR /usr/src/app
+# Set the working directory in the container
+WORKDIR /app
 
-# Install app dependencies
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
+
+# Install NestJS dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of your application code
 COPY . .
 
-# Generate Prisma Client
-RUN npx prisma generate
-
-# Build the application
-RUN npm run build
-
-# Stage 2: Run the application
-FROM node:16
-
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy only the necessary files from the build stage
-COPY package*.json ./
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/prisma ./prisma
-
-# Install only production dependencies
-RUN npm install --only=production
-
-# Copy the .env file
-COPY .env ./
-
-# Expose the application port
+# Expose the port your app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["node", "dist/main"]
+# Start the NestJS application
+CMD ["npm", "run", "start:prod"]

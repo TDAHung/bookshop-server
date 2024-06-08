@@ -22,7 +22,7 @@ block content
                         div.t-row.author__bio.text-center.underline.text-blue-500
                             div(href=`${author.bio}` target="_blank")= author.bio
                         div.t-row.author__thumpnail.image-wrapper
-                            img(src=`${author.thumpnail.url}` alt=`${author.thumpnail.name}`)
+                            img(src=`${author.thumpnail.url}` alt=`${author.thumpnail.name}` class="h-full rounded-full")
                         div.t-row.updated_at.text-center= author.updatedAt
                     .absolute.action.bottom-0
                         .absolute.w-20(class="right-1/4").flex.justify-between.items-center

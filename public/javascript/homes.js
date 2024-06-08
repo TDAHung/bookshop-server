@@ -2,7 +2,7 @@ const ctx = document.getElementById('myChart');
 
 const lineChartData = document.getElementById('lineChartData');
 const monthPattern = /<div class="month">(\d{4}-\d{2})<\/div>/g;
-const pricePattern = /<div class="total_price">(\d+)<\/div>/g;
+const pricePattern = /<div\s+class="total_price">([^<]+)<\/div>/g;
 let months = [];
 let prices = [];
 let match;
@@ -11,8 +11,11 @@ while ((match = monthPattern.exec(lineChartData.innerHTML)) !== null) {
 }
 
 while ((match = pricePattern.exec(lineChartData.innerHTML)) !== null) {
+    console.log(match[0]);
     prices.push(match[1]);
 }
+
+console.log(prices);
 
 new Chart(ctx, {
     type: 'line',

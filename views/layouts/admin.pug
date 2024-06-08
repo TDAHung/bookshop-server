@@ -50,7 +50,7 @@ html(lang="en")
               i.fa-solid.fa-pencil
               |  Authors
         li.navbar__link.px-8.h-20(class= path === 'promotions' ? 'active' : '')
-          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'promotions' ? 'active' : '')
             a(href="/promotions")
               i.fa-regular.fa-address-card
               |  Promotions
@@ -59,8 +59,8 @@ html(lang="en")
             a(href="/about")
               i.fa-regular.fa-address-card
               |  About
-        li.navbar__link.px-8.h-20.mt-64(class= path === 'about' ? 'active' : '')
-          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === 'about' ? 'active' : '')
+        li.navbar__link.px-8.h-20.mt-64
+          div.navbar__link__wrapper.flex.flex-col.justify-center.h-full.px-4(class= path === '' ? 'active' : '')
             a(href="/logout")
               i.fa-solid.fa-arrow-right-from-bracket
               |  Logout
