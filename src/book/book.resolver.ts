@@ -82,8 +82,6 @@ export class BookResolver {
     else if (sortByReview.reviews === "desc") {
       booksWithAvgRating.sort((a, b) => b.avgRating - a.avgRating)
     }
-
-    console.log(booksWithAvgRating);
     return booksWithAvgRating;
   }
 

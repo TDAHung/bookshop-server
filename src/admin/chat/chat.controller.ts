@@ -1,6 +1,10 @@
-import { Controller, Get, Render } from "@nestjs/common";
+import { CustomExceptionFilter } from './../filter/custom-exception.filter';
+import { AuthenticatedGuard } from './../auth/guards/authenticated.guard';
+import { Controller, Get, Render, Session, UseGuards, UseFilters } from "@nestjs/common";
 import { AdminUserSerivce } from "../users/user.service";
 
+@UseGuards(AuthenticatedGuard)
+@UseFilters(CustomExceptionFilter)
 @Controller()
 export class AdminChatController {
 
@@ -19,7 +23,9 @@ export class AdminChatController {
     }
     @Get('chat')
     @Render("chat/index")
-    async index() {
+    async index(
+        @Session() session: any,
+    ) {
         const users = await this.adminUserService.users({
             where: {
                 AND: [
@@ -66,7 +72,8 @@ export class AdminChatController {
         });
 
         return this.render('index,', {
-            users
+            users,
+            user: session.passport.user
         });
     }
 }

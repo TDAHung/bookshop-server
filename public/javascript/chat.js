@@ -2,6 +2,8 @@ const socket = io('http://localhost:3000');
 const messages = document.getElementById('messages');
 const userWrapper = document.getElementById('users-wrapper');
 let userId = Number(document.querySelector('.user-btn').id);
+let adminId = Number(document.querySelector('#userId').innerText)
+socket.emit('joinRoom', adminId);
 
 socket.on('onMessage', (payload) => {
     console.log(payload);

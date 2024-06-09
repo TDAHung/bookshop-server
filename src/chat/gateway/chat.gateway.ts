@@ -50,9 +50,6 @@ export class ChatGateway implements OnModuleInit {
       },
     });
 
-
-    console.log(users);
-
     const getLatestMessageTime = (messages) => {
       return messages.reduce((latest, message) => {
         const messageTime = new Date(message.createdAt);
@@ -72,7 +69,6 @@ export class ChatGateway implements OnModuleInit {
       return bLatest - aLatest;
     });
 
-    console.log(sortedUsers);
     this.server.emit('onMessage', {
       content: message,
       users: sortedUsers
