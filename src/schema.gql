@@ -142,6 +142,11 @@ type CategoryEntity {
   name: String!
 }
 
+type Chat {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateCartInput {
   """User id"""
   userId: Float!
@@ -156,6 +161,11 @@ input CreateCartItemInput {
 
   """quantity of book"""
   quantity: Int!
+}
+
+input CreateChatInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 input CreateOrderInput {
@@ -236,17 +246,20 @@ type ImageJson {
 type Mutation {
   createCart(createCart: CreateCartInput!): Cart!
   createCartItem(createCartItem: CreateCartItemInput!): CartItemEntity!
+  createChat(createChatInput: CreateChatInput!): Chat!
   createOrder(createOrder: CreateOrderInput!): OrderEntity!
   createReview(createReviewInput: CreateReviewInput!): ReviewEntity!
   createUser(createUserInput: CreateUserInput!): UserEntity!
   removeCart(id: Int!): Cart!
   removeCartItem(id: Int!): CartItemEntity!
+  removeChat(id: Int!): Chat!
   removeReview(id: Int!): ReviewEntity!
   removeUser(id: Int!): UserEntity!
   signIn(signInInput: SignInInput!): SignResponse!
   signUp(signUpInput: SignUpInput!): SignResponse!
   updateBook(updateBookInput: UpdateBookInput!): BookEntity!
   updateCartItem(updateCartItem: UpdateCartItemInput!): CartItemEntity!
+  updateChat(updateChatInput: UpdateChatInput!): Chat!
   updateUser(updateUserInput: UpdateUserInput!): UserEntity!
 }
 
@@ -343,6 +356,7 @@ type Query {
   cart(id: Int!): Cart!
   categories(order: String, search: String, sortBy: String): [CategoryEntity!]!
   category(id: Int!): CategoryEntity!
+  chat(id: Int!): Chat!
   checkCart(id: Int): Boolean!
   checkCartItem(bookId: Int!, cartId: Int!): Boolean!
   order(id: Int!): OrderEntity!
@@ -434,6 +448,12 @@ input UpdateCartItemInput {
 
   """quantity of Cart Item"""
   quantity: Int!
+}
+
+input UpdateChatInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateUserInput {

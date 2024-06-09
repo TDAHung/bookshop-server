@@ -22,6 +22,7 @@ import { CartItemModule } from './cart-item/cart-item.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { AboutModule } from './admin/about/about.module';
 import { AppController } from './app.controller';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { AppController } from './app.controller';
     CartModule,
     UserModule,
     CartItemModule,
-    PromotionModule
+    PromotionModule,
+    ChatModule
   ],
   controllers: [AppController]
 })
