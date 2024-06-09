@@ -5,6 +5,9 @@ export class CreateChatInput {
   @Field({ description: 'Example field (placeholder)' })
   content: string;
 
-  @Field(() => Int, { description: 'user ID' })
-  userId: number;
+  @Field(() => Int, { description: 'sender ID' })
+  senderId: number;
+
+  @Field(() => Int, { nullable: true, description: 'receiver ID' })
+  receiverId: number;
 }

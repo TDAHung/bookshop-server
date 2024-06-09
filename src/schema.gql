@@ -143,8 +143,20 @@ type CategoryEntity {
 }
 
 type Chat {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """content"""
+  content: String!
+
+  """created at"""
+  createdAt: DateTime
+
+  """ID"""
+  id: Int!
+
+  """ID receiver"""
+  receiverId: Int
+
+  """ID sender"""
+  senderId: Int
 }
 
 input CreateCartInput {
@@ -167,8 +179,11 @@ input CreateChatInput {
   """Example field (placeholder)"""
   content: String!
 
-  """user ID"""
-  userId: Int!
+  """receiver ID"""
+  receiverId: Int
+
+  """sender ID"""
+  senderId: Int!
 }
 
 input CreateOrderInput {
@@ -362,6 +377,7 @@ type Query {
   chat(id: Int!): Chat!
   checkCart(id: Int): Boolean!
   checkCartItem(bookId: Int!, cartId: Int!): Boolean!
+  messages(userId: Int!): [Chat!]!
   order(id: Int!): OrderEntity!
   orders(userID: Int): [OrderEntity!]!
   promotion(id: Int!): PromotionEntity!
@@ -458,8 +474,11 @@ input UpdateChatInput {
   content: String
   id: Int!
 
-  """user ID"""
-  userId: Int
+  """receiver ID"""
+  receiverId: Int
+
+  """sender ID"""
+  senderId: Int
 }
 
 input UpdateUserInput {

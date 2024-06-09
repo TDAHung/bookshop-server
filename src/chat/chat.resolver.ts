@@ -6,16 +6,31 @@ import { UpdateChatInput } from './dto/update-chat.input';
 
 @Resolver(() => Chat)
 export class ChatResolver {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(private readonly chatService: ChatService) { }
 
   @Mutation(() => Chat)
-  createChat(@Args('createChatInput') createChatInput: CreateChatInput) {
-    return this.chatService.create(createChatInput);
+  async createChat(@Args('createChatInput') createChatInput: CreateChatInput) {
+    // return await this.chatService.create(createChatInput);
   }
 
-  @Query(() => [Chat], { name: 'chat' })
-  findAll() {
-    return this.chatService.findAll();
+  @Query(() => [Chat], { name: 'messages' })
+  async findAll(
+    @Args('userId', { type: () => Int }) id: number
+  ) {
+    const messages = await this.chatService.messages({
+      where: {
+        OR: [
+          {
+            senderId: id
+          },
+          {
+            receiverId: id
+          }
+        ]
+      }
+    });
+    console.log(messages);
+    return messages;
   }
 
   @Query(() => Chat, { name: 'chat' })

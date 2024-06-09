@@ -28,14 +28,16 @@ export class AdminUserSerivce {
 
     user = async (
         params: {
-            where: Prisma.UserWhereUniqueInput
+            where?: Prisma.UserWhereUniqueInput
+            include?: Prisma.UserInclude
         }
     ) => {
-        const { where } = params;
+        const { where, include } = params;
         try {
             return await this.prismaService.user.findFirst(
                 {
-                    where
+                    where,
+                    include
                 }
             );
         } catch (error) {
@@ -43,4 +45,22 @@ export class AdminUserSerivce {
         }
     }
 
+
+    users = async (
+        params: {
+            where?: Prisma.UserWhereInput,
+            include?: Prisma.UserInclude,
+            orderBy?: Prisma.UserOrderByWithRelationInput
+        }
+    ) => {
+        const { where, include } = params;
+        try {
+            return await this.prismaService.user.findMany({
+                where,
+                include
+            })
+        } catch (error) {
+
+        }
+    }
 }

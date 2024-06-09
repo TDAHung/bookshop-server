@@ -11,10 +11,12 @@ export class ChatService {
 
   create = async (
     data: Prisma.MessageUncheckedCreateInput,
+    include: Prisma.MessageInclude,
   ) => {
     try {
       const message = await this.prismaService.message.create({
         data,
+        include
       });
       return message;
     } catch (error) {
@@ -22,10 +24,26 @@ export class ChatService {
     }
   }
 
-
-  findAll() {
-    return `This action returns all chat`;
+  messages = async (
+    params: {
+      where?: Prisma.MessageWhereInput,
+      include?: Prisma.MessageInclude,
+      orderBy?: Prisma.MessageOrderByWithRelationInput,
+    }
+  ) => {
+    const { where, include, orderBy } = params;
+    try {
+      const messages = await this.prismaService.message.findMany({
+        where,
+        include,
+        orderBy
+      });
+      return messages;
+    } catch (error) {
+      throw error;
+    }
   }
+
 
   findOne(id: number) {
     return `This action returns a #${id} chat`;
