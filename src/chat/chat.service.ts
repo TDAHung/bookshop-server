@@ -1,12 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { PrismaService } from './../prisma.service';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UpdateChatInput } from './dto/update-chat.input';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ChatService {
-  create(createChatInput: CreateChatInput) {
-    return 'This action adds a new chat';
+
+  constructor(private readonly prismaService: PrismaService) { }
+
+  create = async (
+    data: Prisma.MessageUncheckedCreateInput,
+  ) => {
+    try {
+      const message = await this.prismaService.message.create({
+        data,
+      });
+      return message;
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.NOT_ACCEPTABLE);
+    }
   }
+
 
   findAll() {
     return `This action returns all chat`;

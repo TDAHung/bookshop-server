@@ -165,7 +165,10 @@ input CreateCartItemInput {
 
 input CreateChatInput {
   """Example field (placeholder)"""
-  exampleField: Int!
+  content: String!
+
+  """user ID"""
+  userId: Int!
 }
 
 input CreateOrderInput {
@@ -452,8 +455,11 @@ input UpdateCartItemInput {
 
 input UpdateChatInput {
   """Example field (placeholder)"""
-  exampleField: Int
+  content: String
   id: Int!
+
+  """user ID"""
+  userId: Int
 }
 
 input UpdateUserInput {

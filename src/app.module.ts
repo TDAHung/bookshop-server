@@ -23,6 +23,7 @@ import { PromotionModule } from './promotion/promotion.module';
 import { AboutModule } from './admin/about/about.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
+import { AdminChatModule } from './admin/chat/chat.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ChatModule } from './chat/chat.module';
     AdminReviewModule,
     AdminCategoryModule,
     AdminPromotionListModule,
+    AdminChatModule,
     AboutModule,
     BookModule,
     AuthModule,

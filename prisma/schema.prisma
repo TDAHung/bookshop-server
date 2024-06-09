@@ -14,27 +14,30 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
-  email     String    @unique
-  firstName String
-  lastName  String
-  password  String
-  role      UserRole
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  reviews   Review[]
-  orders    Order[]
-  cart      Cart?
-  Message   Message[]
+  id               Int       @id @default(autoincrement())
+  username         String    @unique
+  email            String    @unique
+  firstName        String
+  lastName         String
+  password         String
+  role             UserRole
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+  reviews          Review[]
+  orders           Order[]
+  cart             Cart?
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  senderId   Int
+  receiverId Int?
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User?    @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
 
 model Category {
